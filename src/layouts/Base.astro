@@ -1,0 +1,90 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config/site';
+import { url } from '../lib/utils';
+
+interface Props {
+  titulo: string;
+  descricao?: string;
+  /** Título completo sem o sufixo da marca (usado na página inicial). */
+  tituloCompleto?: boolean;
+  imagem?: string;
+  tipoOg?: 'website' | 'article' | 'product';
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  secaoAtiva?: 'solucoes' | 'fabricantes' | 'sobre' | 'revendas' | 'contato';
+}
+
+const {
+  titulo,
+  descricao = SITE.descricaoPadrao,
+  tituloCompleto = false,
+  imagem = 'og-arxen.png',
+  tipoOg = 'website',
+  jsonLd,
+  secaoAtiva,
+} = Astro.props;
+
+const tituloFinal = tituloCompleto ? titulo : `${titulo} | ${SITE.nome}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const imagemAbs = new URL(url(imagem), Astro.site).href;
+const robots = SITE.indexavel ? 'index, follow' : 'noindex, nofollow';
+const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+---
+
+<!doctype html>
+<html lang={SITE.idioma}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloFinal}</title>
+    <meta name="description" content={descricao} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#ffffff" />
+
+    <meta property="og:type" content={tipoOg === 'product' ? 'website' : tipoOg} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:site_name" content={SITE.nome} />
+    <meta property="og:title" content={tituloFinal} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagemAbs} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={tituloFinal} />
+    <meta name="twitter:description" content={descricao} />
+    <meta name="twitter:image" content={imagemAbs} />
+
+    <link rel="icon" type="image/png" sizes="32x32" href={url('favicon-32.png')} />
+    <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
+    <link rel="sitemap" href={url('sitemap-index.xml')} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    />
+    <link rel="preload" as="image" href={url('img/brand/arxen-logo.webp')} type="image/webp" />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  </head>
+  <body>
+    <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+    <Header secaoAtiva={secaoAtiva} />
+    <main id="conteudo" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import '../scripts/revelar';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+---
+import { categorias } from '../data/categorias';
+import { fabricantes } from '../data/fabricantes';
+import { CONTATO, SITE, whatsappUrl } from '../config/site';
+import { rotas, url } from '../lib/utils';
+
+const ano = new Date().getFullYear();
+const wa = whatsappUrl();
+const temContato = CONTATO.email || CONTATO.telefone || wa || CONTATO.linkedin;
+---
+
+<footer class="rodape">
+  <div class="wrap">
+    <div class="rodape__topo">
+      <div class="rodape__marca">
+        <a href={rotas.inicio()} aria-label="ARXEN Security — página inicial">
+          <img src={url('img/brand/arxen-logo.png')} alt="ARXEN Security" width="640" height="212" loading="lazy" />
+        </a>
+        <p class="texto-2">Soluções de cibersegurança organizadas por necessidade, com orientação para escolher o que faz sentido para cada empresa.</p>
+        <a class="btn btn--escuro btn--pequeno" href={rotas.contato()}>Falar com especialista</a>
+      </div>
+
+      <nav class="rodape__col" aria-label="Soluções">
+        <p class="rodape__titulo">Soluções</p>
+        <ul>
+          {categorias.map((c) => <li><a href={rotas.categoria(c.slug)}>{c.curto}</a></li>)}
+          <li><a href={rotas.solucoes()}>Catálogo completo</a></li>
+        </ul>
+      </nav>
+
+      <nav class="rodape__col" aria-label="Fabricantes">
+        <p class="rodape__titulo">Fabricantes</p>
+        <ul>
+          {fabricantes.map((f) => <li><a href={rotas.fabricante(f.slug)}>{f.nome}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="rodape__col" aria-label="Institucional">
+        <p class="rodape__titulo">ARXEN</p>
+        <ul>
+          <li><a href={rotas.sobre()}>Sobre</a></li>
+          <li><a href={rotas.revendas()}>Para revendas e empresas de TI</a></li>
+          <li><a href={rotas.contato()}>Contato comercial</a></li>
+          <li><a href={rotas.privacidade()}>Privacidade</a></li>
+        </ul>
+        {
+          temContato && (
+            <ul class="rodape__contato">
+              {CONTATO.email && <li><a href={`mailto:${CONTATO.email}`}>{CONTATO.email}</a></li>}
+              {CONTATO.telefone && <li><a href={`tel:${CONTATO.telefone}`}>{CONTATO.telefoneExibicao ?? CONTATO.telefone}</a></li>}
+              {wa && <li><a href={wa} rel="noopener" target="_blank">WhatsApp</a></li>}
+              {CONTATO.linkedin && <li><a href={CONTATO.linkedin} rel="noopener" target="_blank">LinkedIn</a></li>}
+            </ul>
+          )
+        }
+      </nav>
+    </div>
+
+    <div class="rodape__base">
+      <p>
+        © {ano} {SITE.nome}{CONTATO.cnpj && ` · CNPJ ${CONTATO.cnpj}`}
+      </p>
+      <p class="rodape__aviso">
+        Marcas e logotipos de fabricantes pertencem aos respectivos titulares e são exibidos apenas para identificar as soluções apresentadas.
+      </p>
+      {
+        SITE.creditoProposta && (
+          <p>
+            <a href={SITE.creditoProposta.url} rel="noopener" target="_blank">{SITE.creditoProposta.texto}</a>
+          </p>
+        )
+      }
+    </div>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    background: var(--paper);
+    border-top: 1px solid var(--line-l);
+    padding-top: clamp(56px, 7vw, 88px);
+    font-size: 0.93rem;
+  }
+  .rodape__topo {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .rodape__marca {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+    align-content: start;
+    max-width: 360px;
+  }
+  .rodape__marca img {
+    height: 48px;
+    width: auto;
+    mix-blend-mode: multiply;
+  }
+  .rodape__titulo {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tx-l-2);
+    margin-bottom: 14px;
+  }
+  .rodape ul {
+    list-style: none;
+    display: grid;
+    gap: 2px;
+  }
+  .rodape__col a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    text-decoration: none;
+    color: var(--tx-l-1);
+  }
+  .rodape__col a:hover {
+    color: var(--blue-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .rodape__contato {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line-l);
+  }
+  .rodape__base {
+    margin-top: 56px;
+    padding-block: 24px 32px;
+    border-top: 1px solid var(--line-l);
+    display: grid;
+    gap: 10px;
+    color: var(--tx-l-2);
+    font-size: 0.84rem;
+  }
+  .rodape__base a {
+    color: var(--tx-l-2);
+  }
+  .rodape__aviso {
+    max-width: 80ch;
+  }
+  @media (min-width: 900px) {
+    .rodape__topo {
+      grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+      gap: 48px;
+    }
+    .rodape__marca {
+      grid-column: auto;
+    }
+    .rodape__base {
+      grid-template-columns: auto 1fr auto;
+      align-items: start;
+      gap: 32px;
+    }
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import Trilha from '../../components/Trilha.astro';
+import CardFabricante from '../../components/CardFabricante.astro';
+import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import { fabricantes } from '../../data/fabricantes';
+import { solucoes } from '../../data/solucoes';
+---
+
+<Base
+  titulo="Fabricantes de soluções de cibersegurança"
+  descricao={`Conheça os ${fabricantes.length} fabricantes do catálogo da ARXEN: ${fabricantes.map((f) => f.nome).join(', ')}.`}
+  secaoAtiva="fabricantes"
+>
+  <section class="s-escura topo-pag">
+    <div class="wrap">
+      <Trilha itens={[{ rotulo: 'Fabricantes' }]} escura />
+      <div class="topo-pag__grade">
+        <h1>Fabricantes</h1>
+        <p class="lead">
+          {fabricantes.length} fabricantes e {solucoes.length} soluções, cada um com foco em uma camada da segurança. Abra a página de um fabricante para ver produtos, cenários indicados e diferenças entre as opções.
+        </p>
+      </div>
+      <ul class="grade-fabs">
+        {
+          fabricantes.map((f, i) => (
+            <li class="revelar" style={`--atraso:${(i % 3) * 70}ms`}>
+              <CardFabricante fabricante={f} nivel="h2" />
+            </li>
+          ))
+        }
+      </ul>
+      <p class="aviso">Marcas exibidas para identificar as soluções. A apresentação não indica parceria oficial, distribuição autorizada ou certificação junto aos fabricantes.</p>
+    </div>
+  </section>
+  <ChamadaFinal />
+</Base>
+
+<style>
+  .topo-pag {
+    padding-block: 28px clamp(64px, 8vw, 112px);
+  }
+  .topo-pag__grade {
+    display: grid;
+    gap: 20px;
+    margin: clamp(28px, 5vw, 56px) 0 clamp(36px, 5vw, 56px);
+  }
+  @media (min-width: 960px) {
+    .topo-pag__grade {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 64px;
+    }
+  }
+  .grade-fabs {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+  @media (min-width: 640px) {
+    .grade-fabs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1000px) {
+    .grade-fabs {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .aviso {
+    margin-top: 24px;
+    font-size: 0.82rem;
+    color: var(--tx-d-3);
+  }
+</style>

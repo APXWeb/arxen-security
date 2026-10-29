@@ -1,0 +1,140 @@
+---
+import Icon from './Icon.astro';
+import type { Solucao } from '../data/tipos';
+import { fabricantePorSlug } from '../data/fabricantes';
+import { categoriaPorSlug } from '../data/categorias';
+import { normalizar, rotas, rotuloConversao } from '../lib/utils';
+
+interface Props {
+  solucao: Solucao;
+  /** Nível do título, para manter a hierarquia correta em cada página. */
+  nivel?: 'h2' | 'h3';
+  filtravel?: boolean;
+}
+
+const { solucao: s, nivel = 'h3', filtravel = false } = Astro.props;
+const fab = fabricantePorSlug(s.fabricante)!;
+const cat = categoriaPorSlug(s.categoriaPrincipal)!;
+const Titulo = nivel;
+
+const indice = filtravel
+  ? normalizar(
+      [s.nome, fab.nome, s.familia ?? '', s.descricao, s.beneficio, ...s.palavrasChave, ...s.categorias.map((c) => categoriaPorSlug(c)?.nome ?? '')].join(' '),
+    )
+  : undefined;
+---
+
+<article
+  class="card-sol"
+  data-solucao={filtravel ? s.slug : undefined}
+  data-fabricante={filtravel ? s.fabricante : undefined}
+  data-categorias={filtravel ? s.categorias.join(' ') : undefined}
+  data-indice={indice}
+>
+  <div class="card-sol__meta">
+    <span class="card-sol__fab">{fab.nome}</span>
+    <span class="etiqueta"><Icon nome={cat.icone} tamanho={14} />{cat.curto}</span>
+  </div>
+  <Titulo class="card-sol__nome">
+    <a href={rotas.solucao(s.slug)}>{s.nome}</a>
+  </Titulo>
+  <p class="card-sol__desc">{s.descricao}</p>
+  <p class="card-sol__benef">
+    <Icon nome="check" tamanho={18} />
+    <span><span class="sr-only">Principal benefício: </span>{s.beneficio}</span>
+  </p>
+  <div class="card-sol__acoes">
+    <a class="link-seta" href={rotas.solucao(s.slug)} aria-label={`Conhecer ${s.nome}`}><span>Conhecer</span><Icon nome="seta" /></a>
+    <a class="btn btn--contorno btn--pequeno" href={rotas.contato({ solucao: s.slug })} aria-label={`${rotuloConversao[s.conversao]} — ${s.nome}`}>
+      {rotuloConversao[s.conversao]}
+    </a>
+  </div>
+</article>
+
+<style>
+  .card-sol {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px;
+    background: var(--white);
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-2);
+    transition:
+      border-color var(--t-2) var(--ease),
+      box-shadow var(--t-2) var(--ease);
+  }
+  .card-sol:hover {
+    border-color: var(--line-l-2);
+    box-shadow: 0 18px 40px -28px rgba(5, 10, 20, 0.35);
+  }
+  .card-sol::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 24px;
+    width: 2px;
+    height: 28px;
+    background: var(--blue-ink);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform var(--t-2) var(--ease);
+  }
+  .card-sol:hover::before,
+  .card-sol:focus-within::before {
+    transform: scaleY(1);
+  }
+  .card-sol__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .card-sol__fab {
+    font-family: var(--f-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tx-l-2);
+  }
+  .card-sol__nome {
+    font-size: 1.22rem;
+    line-height: 1.25;
+  }
+  .card-sol__nome a {
+    text-decoration: none;
+  }
+  .card-sol__nome a:hover {
+    color: var(--blue-ink);
+  }
+  .card-sol__desc {
+    color: var(--tx-l-2);
+    font-size: 0.95rem;
+  }
+  .card-sol__benef {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line-l);
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  .card-sol__benef :global(.icone) {
+    color: var(--blue-ink);
+    margin-top: 1px;
+  }
+  .card-sol__acoes {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 6px;
+  }
+</style>

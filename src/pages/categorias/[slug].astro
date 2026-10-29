@@ -1,0 +1,184 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Trilha from '../../components/Trilha.astro';
+import CardSolucao from '../../components/CardSolucao.astro';
+import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import { categorias } from '../../data/categorias';
+import { solucoesDaCategoria } from '../../data/solucoes';
+import { fabricantePorSlug } from '../../data/fabricantes';
+import type { Categoria } from '../../data/tipos';
+import { rotas, url } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return categorias.map((c) => ({ params: { slug: c.slug }, props: { categoria: c } }));
+}
+
+const { categoria: c } = Astro.props as { categoria: Categoria };
+const lista = solucoesDaCategoria(c.slug);
+const fabs = [...new Set(lista.map((s) => s.fabricante))].map((f) => fabricantePorSlug(f)!);
+const outras = categorias.filter((o) => o.slug !== c.slug);
+---
+
+<Base titulo={c.nome} descricao={`${c.resumo} Compare ${lista.length} soluções de ${fabs.map((f) => f.nome).join(', ')}.`} secaoAtiva="solucoes">
+  <section class="s-escura cat-hero">
+    <div class="wrap">
+      <Trilha itens={[{ rotulo: 'Soluções', href: rotas.solucoes() }, { rotulo: c.curto }]} escura />
+      <div class="cat-hero__grade">
+        <div class="cat-hero__texto">
+          <span class="cat-hero__icone"><Icon nome={c.icone} tamanho={30} /></span>
+          <h1>{c.nome}</h1>
+          <p class="lead">{c.introducao}</p>
+        </div>
+        <aside class="sinais" aria-labelledby="t-sinais">
+          <h2 id="t-sinais">Sinais de que é hora de olhar para isso</h2>
+          <ul class="lista-check">
+            {c.sinais.map((s) => <li><Icon nome="check" /><span>{s}</span></li>)}
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao--compacta s-papel" aria-labelledby="t-lista">
+    <div class="wrap">
+      <div class="cat-lista__cabeca">
+        <h2 id="t-lista">{lista.length} {lista.length === 1 ? 'solução' : 'soluções'} nesta categoria</h2>
+        <p class="texto-2">Fabricantes: {fabs.map((f, i) => <>{i > 0 && ', '}<a href={rotas.fabricante(f.slug)}>{f.nome}</a></>)}</p>
+      </div>
+      <div class="cat-lista">{lista.map((s) => <CardSolucao solucao={s} />)}</div>
+      <a class="link-seta cat-lista__filtro" href={`${url('solucoes')}?categoria=${c.slug}`}><span>Abrir no catálogo com filtros</span><Icon nome="seta" /></a>
+    </div>
+  </section>
+
+  <section class="secao--compacta" aria-labelledby="t-outras">
+    <div class="wrap">
+      <h2 id="t-outras" class="outras__titulo">Outras necessidades</h2>
+      <ul class="outras">
+        {
+          outras.map((o) => (
+            <li>
+              <a href={rotas.categoria(o.slug)}>
+                <Icon nome={o.icone} tamanho={20} />
+                <span>{o.nome}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <ChamadaFinal titulo="Não sabe qual combinação faz sentido?" texto="Conte o que preocupa no seu ambiente. A ARXEN ajuda a decidir quais camadas priorizar e quais soluções se complementam." />
+</Base>
+
+<style>
+  .cat-hero {
+    padding-block: 28px clamp(56px, 7vw, 96px);
+  }
+  .cat-hero__grade {
+    display: grid;
+    gap: 40px;
+    margin-top: clamp(28px, 5vw, 56px);
+  }
+  .cat-hero__texto {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+    align-content: start;
+  }
+  .cat-hero__icone {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--r-2);
+    background: var(--navy);
+    color: #fff;
+  }
+  .cat-hero h1 {
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    max-width: 18ch;
+  }
+  .sinais {
+    align-self: end;
+    padding: 28px;
+    border: 1px solid var(--line-d-2);
+    border-radius: var(--r-3);
+    background: var(--ink-1);
+  }
+  .sinais h2 {
+    font-size: 1.05rem;
+    margin-bottom: 18px;
+  }
+  .sinais li {
+    color: var(--tx-d-2);
+    font-size: 0.95rem;
+  }
+  @media (min-width: 980px) {
+    .cat-hero__grade {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 72px;
+    }
+  }
+  .cat-lista__cabeca {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .cat-lista__cabeca h2 {
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  }
+  .cat-lista__cabeca a {
+    color: var(--tx-l-1);
+    text-underline-offset: 3px;
+  }
+  .cat-lista {
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 700px) {
+    .cat-lista {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+  }
+  .cat-lista__filtro {
+    margin-top: 24px;
+  }
+  .outras__titulo {
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+  .outras {
+    list-style: none;
+    display: grid;
+    gap: 0 40px;
+  }
+  @media (min-width: 700px) {
+    .outras {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1100px) {
+    .outras {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .outras a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    border-bottom: 1px solid var(--line-l);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--t-1);
+  }
+  .outras a :global(.icone) {
+    flex: none;
+    color: var(--navy);
+  }
+  .outras a:hover {
+    color: var(--blue-ink);
+  }
+</style>

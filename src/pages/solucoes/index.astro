@@ -1,0 +1,443 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import CardSolucao from '../../components/CardSolucao.astro';
+import Trilha from '../../components/Trilha.astro';
+import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import { solucoes } from '../../data/solucoes';
+import { fabricantes } from '../../data/fabricantes';
+import { categorias } from '../../data/categorias';
+import { rotas } from '../../lib/utils';
+
+const contaFab = (slug: string) => solucoes.filter((s) => s.fabricante === slug).length;
+const contaCat = (slug: string) => solucoes.filter((s) => s.categorias.includes(slug)).length;
+const ordenadas = [...solucoes].sort((a, b) => Number(!!b.destaque) - Number(!!a.destaque));
+---
+
+<Base
+  titulo="Catálogo de soluções de cibersegurança"
+  descricao={`Busque e filtre ${solucoes.length} soluções de ${fabricantes.length} fabricantes por necessidade: endpoints, DLP, e-mail, backup, acessos, vulnerabilidades e detecção de ameaças.`}
+  secaoAtiva="solucoes"
+>
+  <section class="cat-topo s-escura">
+    <div class="wrap">
+      <Trilha itens={[{ rotulo: 'Soluções' }]} escura />
+      <div class="cat-topo__grade">
+        <div>
+          <h1>Catálogo de soluções</h1>
+          <p class="lead">Encontre a solução pelo nome, pelo fabricante ou pela necessidade que você quer resolver. Cada item tem uma página com funcionamento, recursos e cenários indicados.</p>
+        </div>
+        <form class="busca" role="search" data-busca onsubmit="return false">
+          <label for="busca-catalogo" class="sr-only">Buscar soluções</label>
+          <Icon nome="busca" tamanho={20} />
+          <input id="busca-catalogo" type="search" name="q" placeholder="Ex.: ransomware, DMARC, backup, LGPD" autocomplete="off" enterkeyhint="search" />
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalogo" aria-label="Resultados do catálogo">
+    <div class="wrap catalogo__grade">
+      <button class="btn btn--contorno catalogo__abrir" type="button" aria-expanded="false" aria-controls="filtros" data-abrir-filtros>
+        <Icon nome="filtro" /> Filtros <span class="catalogo__ativos" data-qtd-ativos hidden></span>
+      </button>
+
+      <aside class="filtros" id="filtros" aria-label="Filtros" data-filtros>
+        <div class="filtros__topo">
+          <h2 class="filtros__titulo">Filtrar</h2>
+          <button class="filtros__fechar" type="button" data-fechar-filtros aria-label="Fechar filtros"><Icon nome="fechar" /></button>
+        </div>
+
+        <fieldset class="filtros__grupo">
+          <legend>Necessidade</legend>
+          {
+            categorias.map((c) => (
+              <label class="filtro">
+                <input type="checkbox" name="categoria" value={c.slug} />
+                <span class="filtro__caixa" aria-hidden="true" />
+                <span class="filtro__rotulo">{c.curto}</span>
+                <span class="filtro__qtd">{contaCat(c.slug)}</span>
+              </label>
+            ))
+          }
+        </fieldset>
+
+        <fieldset class="filtros__grupo">
+          <legend>Fabricante</legend>
+          {
+            fabricantes.map((f) => (
+              <label class="filtro">
+                <input type="checkbox" name="fabricante" value={f.slug} />
+                <span class="filtro__caixa" aria-hidden="true" />
+                <span class="filtro__rotulo">{f.nome}</span>
+                <span class="filtro__qtd">{contaFab(f.slug)}</span>
+              </label>
+            ))
+          }
+        </fieldset>
+
+        <div class="filtros__acoes">
+          <button class="btn btn--contorno btn--pequeno" type="button" data-limpar>Limpar filtros</button>
+          <button class="btn btn--escuro btn--pequeno filtros__ver" type="button" data-fechar-filtros>Ver resultados</button>
+        </div>
+      </aside>
+
+      <div class="resultados">
+        <div class="resultados__barra">
+          <p class="resultados__qtd" aria-live="polite" data-contagem>{solucoes.length} soluções</p>
+          <div class="resultados__chips" data-chips></div>
+        </div>
+
+        <div class="resultados__lista" data-lista>
+          {ordenadas.map((s) => <CardSolucao solucao={s} nivel="h2" filtravel />)}
+        </div>
+
+        <div class="vazio" data-vazio hidden>
+          <Icon nome="busca" tamanho={32} />
+          <h2>Nenhuma solução encontrada</h2>
+          <p class="texto-2">Tente outro termo ou remova alguns filtros. Se não souber qual solução procurar, descreva a necessidade para a equipe da ARXEN.</p>
+          <div class="acoes">
+            <button class="btn btn--escuro btn--pequeno" type="button" data-limpar>Limpar busca e filtros</button>
+            <a class="btn btn--contorno btn--pequeno" href={rotas.contato()}>Pedir orientação</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ChamadaFinal titulo="Não encontrou exatamente o que procura?" texto="Descreva o problema que precisa resolver. A equipe da ARXEN indica quais soluções do portfólio se aplicam e como combiná-las." secundario={{ rotulo: 'Ver fabricantes', href: rotas.fabricantes() }} />
+</Base>
+
+<style>
+  .cat-topo {
+    padding-block: 28px clamp(40px, 6vw, 64px);
+  }
+  .cat-topo__grade {
+    display: grid;
+    gap: 28px;
+    margin-top: clamp(28px, 5vw, 56px);
+    align-items: end;
+  }
+  .cat-topo h1 {
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    margin-bottom: 16px;
+  }
+  @media (min-width: 980px) {
+    .cat-topo__grade {
+      grid-template-columns: 1.15fr 1fr;
+      gap: 64px;
+    }
+  }
+  .busca {
+    position: relative;
+  }
+  .busca :global(.icone) {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--tx-d-2);
+    pointer-events: none;
+  }
+  .busca input {
+    width: 100%;
+    height: 60px;
+    padding: 0 18px 0 52px;
+    border: 1px solid var(--line-d-2);
+    border-radius: var(--r-2);
+    background: var(--ink-2);
+    color: var(--tx-d-1);
+    font-size: 1.05rem;
+    transition: border-color var(--t-1), background var(--t-1);
+  }
+  .busca input::placeholder {
+    color: var(--tx-d-3);
+  }
+  .busca input:focus {
+    outline: none;
+    border-color: var(--blue);
+    background: var(--ink-3);
+    box-shadow: 0 0 0 3px rgba(61, 123, 255, 0.25);
+  }
+
+  .catalogo {
+    background: var(--paper);
+    padding-block: 32px clamp(64px, 8vw, 112px);
+  }
+  .catalogo__grade {
+    display: grid;
+    gap: 24px;
+    align-items: start;
+  }
+  .catalogo__abrir {
+    justify-self: start;
+  }
+  .catalogo__ativos {
+    display: inline-grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 99px;
+    background: var(--blue-ink);
+    color: #fff;
+    font-size: 0.75rem;
+  }
+  .catalogo__ativos[hidden] {
+    display: none;
+  }
+
+  .filtros {
+    display: none;
+  }
+  .filtros.aberto {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: var(--white);
+    padding: 20px var(--gutter) 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    animation: sobe 260ms var(--ease);
+  }
+  @keyframes sobe {
+    from {
+      transform: translateY(16px);
+      opacity: 0;
+    }
+  }
+  .filtros__topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .filtros__titulo {
+    font-size: 1.2rem;
+  }
+  .filtros__fechar {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-1);
+    background: var(--white);
+    cursor: pointer;
+  }
+  .filtros__grupo {
+    border: 0;
+    margin: 0;
+    padding: 18px 0;
+    border-top: 1px solid var(--line-l);
+    display: grid;
+    gap: 2px;
+  }
+  .filtros__grupo legend {
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 0;
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tx-l-2);
+  }
+  .filtro {
+    position: relative;
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 10px;
+    margin: 0 -10px;
+    border-radius: var(--r-1);
+    cursor: pointer;
+    font-size: 0.94rem;
+    transition: background var(--t-1);
+  }
+  .filtro:hover {
+    background: var(--paper);
+  }
+  .filtro input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+  .filtro__caixa {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--line-l-2);
+    border-radius: 4px;
+    background: var(--white);
+    display: grid;
+    place-items: center;
+    transition: background var(--t-1), border-color var(--t-1);
+  }
+  .filtro__caixa::after {
+    content: '';
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: translateY(-1px) rotate(-45deg) scale(0);
+    transition: transform var(--t-1) var(--ease);
+  }
+  .filtro input:checked + .filtro__caixa {
+    background: var(--blue-ink);
+    border-color: var(--blue-ink);
+  }
+  .filtro input:checked + .filtro__caixa::after {
+    transform: translateY(-1px) rotate(-45deg) scale(1);
+  }
+  .filtro input:checked ~ .filtro__rotulo {
+    font-weight: 600;
+  }
+  .filtro input:focus-visible + .filtro__caixa {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .filtro__qtd {
+    font-family: var(--f-mono);
+    font-size: 0.75rem;
+    color: var(--tx-l-2);
+  }
+  .filtros__acoes {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    gap: 10px;
+    padding: 16px 0 20px;
+    margin-top: auto;
+    background: var(--white);
+    border-top: 1px solid var(--line-l);
+  }
+  .filtros__acoes .btn {
+    flex: 1;
+  }
+
+  @media (min-width: 1000px) {
+    .catalogo__grade {
+      grid-template-columns: 260px 1fr;
+      gap: 40px;
+    }
+    .catalogo__abrir,
+    .filtros__fechar,
+    .filtros__ver {
+      display: none;
+    }
+    .filtros,
+    .filtros.aberto {
+      display: block;
+      position: static;
+      inset: auto;
+      z-index: auto;
+      padding: 22px 22px 0;
+      background: var(--white);
+      border: 1px solid var(--line-l);
+      border-radius: var(--r-2);
+      overflow: visible;
+      animation: none;
+    }
+    .filtros__acoes {
+      position: static;
+      padding-top: 14px;
+    }
+  }
+
+  .resultados__barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    min-height: 40px;
+    margin-bottom: 18px;
+  }
+  .resultados__qtd {
+    font-weight: 600;
+  }
+  .resultados__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .resultados__chips :global(button) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+    padding: 0 8px 0 12px;
+    border: 1px solid var(--line-l-2);
+    border-radius: 99px;
+    background: var(--white);
+    font-size: 0.84rem;
+    cursor: pointer;
+    transition: border-color var(--t-1);
+  }
+  .resultados__chips :global(button:hover) {
+    border-color: var(--tx-l-1);
+  }
+  .resultados__chips :global(button span) {
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--tx-l-2);
+  }
+  .resultados__lista {
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 680px) {
+    .resultados__lista {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1280px) {
+    .resultados__lista {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .resultados__lista :global(.card-sol[hidden]) {
+    display: none;
+  }
+  .resultados__lista :global(.card-sol) {
+    animation: aparece 280ms var(--ease);
+  }
+  @keyframes aparece {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  .vazio {
+    display: grid;
+    justify-items: start;
+    align-content: start;
+    gap: 14px;
+    padding: 40px;
+    border: 1px dashed var(--line-l-2);
+    border-radius: var(--r-2);
+    background: var(--white);
+  }
+  .vazio[hidden] {
+    display: none;
+  }
+  .vazio :global(.icone) {
+    color: var(--tx-l-2);
+  }
+  .vazio h2 {
+    font-size: 1.3rem;
+  }
+  .vazio p {
+    max-width: 52ch;
+  }
+</style>
+
+<script>
+  import { iniciarCatalogo } from '../../scripts/catalogo';
+  iniciarCatalogo();
+</script>

@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Trilha from '../components/Trilha.astro';
+import FormContato from '../components/FormContato.astro';
+import { CONTATO, whatsappUrl } from '../config/site';
+import { rotas } from '../lib/utils';
+
+const wa = whatsappUrl('Olá! Gostaria de falar com a ARXEN sobre soluções de segurança.');
+const canais = [
+  CONTATO.email && { rotulo: 'E-mail comercial', valor: CONTATO.email, href: `mailto:${CONTATO.email}` },
+  CONTATO.telefone && { rotulo: 'Telefone', valor: CONTATO.telefoneExibicao ?? CONTATO.telefone, href: `tel:${CONTATO.telefone}` },
+  wa && { rotulo: 'WhatsApp', valor: 'Iniciar conversa', href: wa },
+].filter(Boolean) as { rotulo: string; valor: string; href: string }[];
+---
+
+<Base titulo="Contato comercial" descricao="Fale com a equipe da ARXEN Security sobre soluções de cibersegurança para sua empresa ou sobre oportunidades para revendas e empresas de TI." secaoAtiva="contato">
+  <section class="contato">
+    <div class="wrap contato__grade">
+      <div class="contato__lado">
+        <Trilha itens={[{ rotulo: 'Contato' }]} />
+        <h1>Fale com um especialista</h1>
+        <p class="lead">Conte o cenário e o que você precisa resolver. Com isso, a conversa já começa pela recomendação — e não por um questionário.</p>
+
+        <ol class="contato__passos">
+          <li>
+            <span>01</span>
+            <div><strong>Você descreve o cenário</strong><p class="texto-2">Ambiente, ferramentas atuais e o que motivou a busca.</p></div>
+          </li>
+          <li>
+            <span>02</span>
+            <div><strong>Análise da equipe</strong><p class="texto-2">Avaliamos quais soluções do portfólio se aplicam ao caso.</p></div>
+          </li>
+          <li>
+            <span>03</span>
+            <div><strong>Próximo passo</strong><p class="texto-2">Avaliação do ambiente, demonstração ou proposta, conforme a solução.</p></div>
+          </li>
+        </ol>
+
+        {
+          canais.length > 0 && (
+            <div class="contato__canais">
+              <p class="contato__sub">Canais diretos</p>
+              <ul>
+                {canais.map((c) => (
+                  <li>
+                    <span>{c.rotulo}</span>
+                    <a href={c.href}>{c.valor}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <p class="contato__revenda">
+          <Icon nome="revenda" tamanho={20} />
+          <span>É revenda, MSP ou integrador? <a href={rotas.revendas()}>Veja como a ARXEN trabalha com empresas de TI.</a></span>
+        </p>
+      </div>
+
+      <div class="contato__form">
+        <h2 class="sr-only">Formulário de contato</h2>
+        <FormContato />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contato {
+    padding-block: 28px clamp(64px, 8vw, 112px);
+    background: linear-gradient(to bottom, var(--white), var(--paper));
+  }
+  .contato__grade {
+    display: grid;
+    gap: 48px;
+  }
+  .contato__lado {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+  }
+  .contato h1 {
+    font-size: clamp(2.1rem, 4.2vw, 3.3rem);
+    margin-top: 20px;
+  }
+  .contato__passos {
+    list-style: none;
+    display: grid;
+    gap: 0;
+    margin-top: 8px;
+  }
+  .contato__passos li {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line-l);
+  }
+  .contato__passos span {
+    font-family: var(--f-mono);
+    font-size: 0.78rem;
+    color: var(--blue-ink);
+    padding-top: 3px;
+  }
+  .contato__passos p {
+    font-size: 0.92rem;
+    margin-top: 2px;
+  }
+  .contato__sub {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tx-l-2);
+    margin-bottom: 10px;
+  }
+  .contato__canais ul {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+  .contato__canais li {
+    display: grid;
+    gap: 2px;
+  }
+  .contato__canais li span {
+    font-size: 0.82rem;
+    color: var(--tx-l-2);
+  }
+  .contato__canais a {
+    font-weight: 600;
+    color: var(--blue-ink);
+  }
+  .contato__revenda {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 12px;
+    padding: 18px;
+    border-radius: var(--r-2);
+    background: var(--paper);
+    font-size: 0.92rem;
+  }
+  .contato__revenda :global(.icone) {
+    color: var(--navy);
+  }
+  .contato__revenda a {
+    color: var(--blue-ink);
+    font-weight: 600;
+  }
+  .contato__form {
+    padding: clamp(22px, 4vw, 44px);
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-3);
+    background: var(--white);
+    box-shadow: 0 30px 60px -40px rgba(5, 10, 20, 0.25);
+  }
+  @media (min-width: 1000px) {
+    .contato__grade {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 72px;
+      align-items: start;
+    }
+    .contato__lado {
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+    }
+  }
+</style>

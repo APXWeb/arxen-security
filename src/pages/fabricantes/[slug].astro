@@ -1,0 +1,356 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Trilha from '../../components/Trilha.astro';
+import LogoFabricante from '../../components/LogoFabricante.astro';
+import CardSolucao from '../../components/CardSolucao.astro';
+import BlocoFabricante from '../../components/BlocoFabricante.astro';
+import ChamadaFinal from '../../components/ChamadaFinal.astro';
+import { fabricantes } from '../../data/fabricantes';
+import { solucoesDoFabricante } from '../../data/solucoes';
+import { categoriaPorSlug } from '../../data/categorias';
+import type { Fabricante } from '../../data/tipos';
+import { INSTITUCIONAL } from '../../config/site';
+import { rotas } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return fabricantes.map((f) => ({ params: { slug: f.slug }, props: { fabricante: f } }));
+}
+
+const { fabricante: f } = Astro.props as { fabricante: Fabricante };
+const lista = solucoesDoFabricante(f.slug);
+const parceiroConfirmado = INSTITUCIONAL.parceriasConfirmadas.includes(f.slug);
+
+// Agrupa por categoria principal — fabricantes com mais soluções ganham navegação por grupos.
+const grupos = [...new Set(lista.map((s) => s.categoriaPrincipal))].map((slug) => ({
+  categoria: categoriaPorSlug(slug)!,
+  itens: lista.filter((s) => s.categoriaPrincipal === slug),
+}));
+const agrupar = lista.length >= 3 && grupos.length > 1;
+const categoriasAtendidas = [...new Set(lista.flatMap((s) => s.categorias))].map((c) => categoriaPorSlug(c)!);
+
+const outros = fabricantes.filter((o) => o.slug !== f.slug);
+---
+
+<Base titulo={`${f.nome} — soluções e produtos`} descricao={`${f.foco} Conheça as soluções ${f.nome} do catálogo da ARXEN: ${lista.map((s) => s.nome).join(', ')}.`} secaoAtiva="fabricantes">
+  <section class="fab-topo s-escura">
+    <div class="wrap">
+      <Trilha itens={[{ rotulo: 'Fabricantes', href: rotas.fabricantes() }, { rotulo: f.nome }]} escura />
+      <div class="fab-topo__grade">
+        <div class="fab-topo__texto">
+          <p class="rotulo">Fabricante</p>
+          <h1>{f.nome}</h1>
+          <p class="lead">{f.foco}</p>
+          <div class="acoes">
+            <a class="btn btn--primario" href={rotas.contato({ fabricante: f.slug })}>Solicitar informações comerciais <Icon nome="seta" /></a>
+            <a class="btn btn--contorno" href="#solucoes">Ver {lista.length} {lista.length === 1 ? 'solução' : 'soluções'}</a>
+          </div>
+        </div>
+        <div class="fab-topo__placa">
+          <LogoFabricante fabricante={f} area={9000} larguraMax={300} carregamento="eager" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao--compacta">
+    <div class="wrap apres">
+      <div class="apres__texto prosa">
+        <h2>Sobre o fabricante</h2>
+        {f.apresentacao.map((p) => <p>{p}</p>)}
+        <p class="apres__oficial">
+          <a href={f.siteOficial} rel="noopener" target="_blank">Site oficial da {f.nome} <Icon nome="externo" tamanho={14} /><span class="sr-only">(abre em nova aba)</span></a>
+        </p>
+      </div>
+      <aside class="apres__lado" aria-labelledby="t-nec">
+        <h2 id="t-nec" class="apres__titulo">Necessidades que atende</h2>
+        <ul class="lista-check">
+          {f.necessidades.map((n) => <li><Icon nome="check" /><span>{n}</span></li>)}
+        </ul>
+        <div class="apres__cats">
+          <p class="apres__sub">Categorias no catálogo</p>
+          <div class="apres__chips">
+            {categoriasAtendidas.map((c) => <a class="etiqueta" href={rotas.categoria(c.slug)}><Icon nome={c.icone} tamanho={14} />{c.curto}</a>)}
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {
+    f.blocos.map((b, i) => (
+      <section class:list={['secao--compacta', { 's-papel': i % 2 === 0 }]}>
+        <div class="wrap">
+          <BlocoFabricante bloco={b} id={`bloco-${i}`} />
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="secao--compacta" id="solucoes" aria-labelledby="t-solucoes">
+    <div class="wrap">
+      <div class="sols__cabeca">
+        <h2 id="t-solucoes">Soluções {f.nome} no catálogo</h2>
+        {
+          agrupar && (
+            <nav class="sols__ancoras" aria-label="Ir para grupo">
+              {grupos.map((g) => <a href={`#grupo-${g.categoria.slug}`}>{g.categoria.curto} <span>{g.itens.length}</span></a>)}
+            </nav>
+          )
+        }
+      </div>
+
+      {
+        agrupar ? (
+          grupos.map((g) => (
+            <div class="sols__grupo" id={`grupo-${g.categoria.slug}`}>
+              <h3 class="sols__grupo-titulo">
+                <Icon nome={g.categoria.icone} tamanho={20} />
+                {g.categoria.nome}
+              </h3>
+              <div class="sols__grade">{g.itens.map((s) => <CardSolucao solucao={s} />)}</div>
+            </div>
+          ))
+        ) : (
+          <div class="sols__grade">{lista.map((s) => <CardSolucao solucao={s} />)}</div>
+        )
+      }
+
+      <p class="sols__aviso">
+        {
+          parceiroConfirmado
+            ? `A ARXEN atua com soluções ${f.nome} na condição informada pela empresa.`
+            : `Esta página descreve as soluções ${f.nome} com base em informações públicas do fabricante. A apresentação não indica parceria oficial, distribuição autorizada ou certificação junto à ${f.nome}.`
+        }
+      </p>
+    </div>
+  </section>
+
+  <section class="secao--compacta s-papel" aria-labelledby="t-outros">
+    <div class="wrap">
+      <h2 id="t-outros" class="outros__titulo">Outros fabricantes</h2>
+      <ul class="outros">
+        {
+          outros.map((o) => (
+            <li>
+              <a href={rotas.fabricante(o.slug)}>
+                <span class="outros__placa"><LogoFabricante fabricante={o} area={1600} larguraMax={120} /></span>
+                <span class="sr-only">{o.nome}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <ChamadaFinal
+    titulo={`Fale com a ARXEN sobre ${f.nome}.`}
+    texto="Informe o ambiente e o que precisa resolver. A equipe retorna com a indicação da solução, do licenciamento adequado e do próximo passo."
+    rotuloBotao="Solicitar informações comerciais"
+    hrefBotao={rotas.contato({ fabricante: f.slug })}
+    secundario={{ rotulo: 'Ver catálogo completo', href: rotas.solucoes() }}
+  />
+</Base>
+
+<style>
+  .fab-topo {
+    padding-block: 28px clamp(48px, 7vw, 88px);
+  }
+  .fab-topo__grade {
+    display: grid;
+    gap: 36px;
+    margin-top: clamp(28px, 5vw, 56px);
+    align-items: center;
+  }
+  .fab-topo__texto {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+    align-content: start;
+  }
+  .fab-topo h1 {
+    font-size: clamp(2.3rem, 5vw, 3.9rem);
+  }
+  .fab-topo .lead {
+    max-width: 44ch;
+  }
+  .fab-topo__placa {
+    display: grid;
+    place-items: center;
+    min-height: 200px;
+    padding: 32px;
+    border-radius: var(--r-3);
+    background: var(--white);
+    box-shadow: 0 0 0 8px var(--ink-1), 0 0 0 9px var(--line-d);
+  }
+  @media (min-width: 960px) {
+    .fab-topo__grade {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 72px;
+    }
+    .fab-topo__placa {
+      min-height: 260px;
+    }
+  }
+
+  .apres {
+    display: grid;
+    gap: 48px;
+  }
+  @media (min-width: 980px) {
+    .apres {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 80px;
+    }
+  }
+  .apres__texto h2 {
+    margin-top: 0;
+  }
+  .apres__texto p {
+    font-size: 1.06rem;
+    line-height: 1.7;
+  }
+  .apres__oficial a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--blue-ink);
+  }
+  .apres__lado {
+    display: grid;
+    gap: 22px;
+    align-content: start;
+    padding: 28px;
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-3);
+  }
+  .apres__titulo {
+    font-size: 1.15rem;
+  }
+  .apres__cats {
+    padding-top: 20px;
+    border-top: 1px solid var(--line-l);
+  }
+  .apres__sub {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tx-l-2);
+    margin-bottom: 12px;
+  }
+  .apres__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .apres__chips a {
+    text-decoration: none;
+    min-height: 32px;
+  }
+  .apres__chips a:hover {
+    border-color: var(--blue-ink);
+    color: var(--blue-ink);
+  }
+
+  .sols__cabeca {
+    display: grid;
+    gap: 18px;
+    margin-bottom: 32px;
+  }
+  .sols__cabeca h2 {
+    font-size: clamp(1.5rem, 2.6vw, 2.15rem);
+  }
+  .sols__ancoras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sols__ancoras a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--line-l-2);
+    border-radius: 99px;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: border-color var(--t-1);
+  }
+  .sols__ancoras a:hover {
+    border-color: var(--tx-l-1);
+  }
+  .sols__ancoras span {
+    font-family: var(--f-mono);
+    font-size: 0.75rem;
+    color: var(--tx-l-2);
+  }
+  .sols__grupo + .sols__grupo {
+    margin-top: 40px;
+  }
+  .sols__grupo-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    margin-bottom: 16px;
+    color: var(--navy);
+  }
+  .sols__grade {
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 700px) {
+    .sols__grade {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+  }
+  .sols__aviso {
+    margin-top: 32px;
+    font-size: 0.84rem;
+    color: var(--tx-l-2);
+    max-width: 90ch;
+  }
+
+  .outros__titulo {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+  .outros {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  @media (min-width: 640px) {
+    .outros {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  @media (min-width: 1100px) {
+    .outros {
+      grid-template-columns: repeat(8, 1fr);
+    }
+  }
+  .outros a {
+    display: block;
+    border-radius: var(--r-2);
+  }
+  .outros__placa {
+    display: grid;
+    place-items: center;
+    height: 76px;
+    padding: 12px;
+    border-radius: var(--r-2);
+    background: var(--white);
+    border: 1px solid var(--line-l);
+    transition: border-color var(--t-1);
+  }
+  .outros a:hover .outros__placa {
+    border-color: var(--line-l-2);
+  }
+</style>

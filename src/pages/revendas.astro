@@ -1,0 +1,289 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Trilha from '../components/Trilha.astro';
+import FormContato from '../components/FormContato.astro';
+import LogoFabricante from '../components/LogoFabricante.astro';
+import { categorias } from '../data/categorias';
+import { fabricantes } from '../data/fabricantes';
+import { rotas } from '../lib/utils';
+
+const perfis = [
+  { titulo: 'Revendas de software', texto: 'Empresas que comercializam licenças e querem ampliar o portfólio de segurança oferecido aos clientes.' },
+  { titulo: 'MSPs e MSSPs', texto: 'Provedores que operam a TI ou a segurança de vários clientes e buscam soluções com gestão centralizada ou multi-tenant.' },
+  { titulo: 'Integradores e consultorias', texto: 'Empresas que desenham e implantam projetos e precisam indicar a solução certa para cada necessidade.' },
+];
+
+const temas = [
+  { titulo: 'Portfólio', texto: 'Quais soluções e fabricantes fazem sentido para a sua base de clientes.' },
+  { titulo: 'Licenciamento', texto: 'Modelos de licença e formas de contratação de cada solução.' },
+  { titulo: 'Oportunidades', texto: 'Apoio na avaliação de uma oportunidade comercial já em andamento.' },
+];
+---
+
+<Base
+  titulo="Para revendas e empresas de TI"
+  descricao="Revendas, MSPs e integradores: converse com a ARXEN sobre o portfólio de soluções de cibersegurança, licenciamento e oportunidades comerciais."
+  secaoAtiva="revendas"
+>
+  <section class="s-escura rev-hero">
+    <div class="wrap">
+      <Trilha itens={[{ rotulo: 'Para revendas' }]} escura />
+      <div class="rev-hero__grade">
+        <div class="rev-hero__texto">
+          <p class="rotulo">Revendas · MSPs · Integradores</p>
+          <h1>Um portfólio de segurança organizado para a sua oferta.</h1>
+          <p class="lead">
+            Se a sua empresa atende clientes com serviços ou licenças de TI, a ARXEN pode conversar sobre as soluções do catálogo, as formas de licenciamento e as oportunidades em andamento.
+          </p>
+          <div class="acoes">
+            <a class="btn btn--primario" href="#conversar">Iniciar conversa comercial <Icon nome="seta" /></a>
+            <a class="btn btn--contorno" href={rotas.solucoes()}>Ver o catálogo</a>
+          </div>
+        </div>
+        <ul class="rev-hero__temas">
+          {
+            temas.map((t, i) => (
+              <li class="revelar" style={`--atraso:${i * 90}ms`}>
+                <span>{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <strong>{t.titulo}</strong>
+                  <p>{t.texto}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao--compacta" aria-labelledby="t-perfis">
+    <div class="wrap">
+      <div class="cabeca">
+        <p class="rotulo">Para quem é</p>
+        <h2 id="t-perfis">Empresas que levam segurança aos próprios clientes.</h2>
+      </div>
+      <ul class="perfis">
+        {
+          perfis.map((p, i) => (
+            <li class="revelar" style={`--atraso:${i * 80}ms`}>
+              <h3>{p.titulo}</h3>
+              <p class="texto-2">{p.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="secao--compacta s-papel" aria-labelledby="t-port">
+    <div class="wrap port">
+      <div>
+        <p class="rotulo">Portfólio</p>
+        <h2 id="t-port">{categorias.length} necessidades, {fabricantes.length} fabricantes.</h2>
+        <p class="lead">A organização por necessidade facilita montar ofertas em camadas para o cliente final — da proteção de endpoints ao SOC.</p>
+        <ul class="port__cats">
+          {categorias.map((c) => <li><a href={rotas.categoria(c.slug)}><Icon nome={c.icone} tamanho={18} />{c.curto}</a></li>)}
+        </ul>
+      </div>
+      <ul class="port__logos" aria-label="Fabricantes do catálogo">
+        {
+          fabricantes.map((f) => (
+            <li>
+              <a href={rotas.fabricante(f.slug)}>
+                <LogoFabricante fabricante={f} area={2000} larguraMax={130} />
+                <span class="sr-only">{f.nome}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="secao--compacta" id="conversar" aria-labelledby="t-conv">
+    <div class="wrap conv">
+      <div class="conv__texto">
+        <p class="rotulo">Conversa comercial</p>
+        <h2 id="t-conv">Conte como a sua empresa atua.</h2>
+        <p class="lead">Com o perfil da sua operação e dos seus clientes, a conversa começa pelo que é relevante para o seu negócio.</p>
+        <p class="conv__aviso">
+          <Icon nome="info" tamanho={18} />
+          <span>Condições comerciais, margens e benefícios de parceria são tratados diretamente com a equipe e dependem de cada fabricante e de cada caso.</span>
+        </p>
+      </div>
+      <div class="conv__form">
+        <FormContato perfilInicial="revenda" id="form-revenda" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .rev-hero {
+    padding-block: 28px clamp(56px, 8vw, 104px);
+    background-image: radial-gradient(ellipse 60% 70% at 100% 100%, rgba(10, 58, 133, 0.45), transparent 70%);
+  }
+  .rev-hero__grade {
+    display: grid;
+    gap: 48px;
+    margin-top: clamp(28px, 5vw, 56px);
+  }
+  .rev-hero__texto {
+    display: grid;
+    gap: 22px;
+    justify-items: start;
+    align-content: start;
+  }
+  .rev-hero h1 {
+    font-size: clamp(2.2rem, 4.6vw, 3.7rem);
+    max-width: 16ch;
+  }
+  .rev-hero__temas {
+    list-style: none;
+    align-self: end;
+    display: grid;
+  }
+  .rev-hero__temas li {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line-d-2);
+  }
+  .rev-hero__temas span {
+    font-family: var(--f-mono);
+    font-size: 0.78rem;
+    color: var(--blue);
+    padding-top: 3px;
+  }
+  .rev-hero__temas strong {
+    font-size: 1.1rem;
+  }
+  .rev-hero__temas p {
+    color: var(--tx-d-2);
+    margin-top: 4px;
+    font-size: 0.95rem;
+  }
+  @media (min-width: 980px) {
+    .rev-hero__grade {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+    }
+  }
+
+  .perfis {
+    list-style: none;
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 800px) {
+    .perfis {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+  }
+  .perfis li {
+    display: grid;
+    gap: 10px;
+    padding-top: 22px;
+    border-top: 2px solid var(--navy);
+  }
+
+  .port {
+    display: grid;
+    gap: 40px;
+  }
+  .port h2 {
+    margin: 16px 0;
+  }
+  .port__cats {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .port__cats a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--line-l-2);
+    border-radius: 99px;
+    background: var(--white);
+    font-size: 0.88rem;
+    text-decoration: none;
+  }
+  .port__cats a :global(.icone) {
+    color: var(--navy);
+  }
+  .port__cats a:hover {
+    border-color: var(--tx-l-1);
+  }
+  .port__logos {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    align-content: start;
+  }
+  .port__logos a {
+    display: grid;
+    place-items: center;
+    height: 84px;
+    padding: 12px;
+    background: var(--white);
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-2);
+    transition: border-color var(--t-1);
+  }
+  .port__logos a:hover {
+    border-color: var(--line-l-2);
+  }
+  @media (min-width: 980px) {
+    .port {
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+  }
+
+  .conv {
+    display: grid;
+    gap: 40px;
+  }
+  .conv__texto {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+  }
+  .conv__aviso {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--tx-l-2);
+    padding-top: 18px;
+    border-top: 1px solid var(--line-l);
+  }
+  .conv__form {
+    padding: clamp(22px, 4vw, 44px);
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-3);
+    background: var(--white);
+  }
+  @media (min-width: 1000px) {
+    .conv {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 72px;
+    }
+    .conv__texto {
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+      align-self: start;
+    }
+  }
+</style>

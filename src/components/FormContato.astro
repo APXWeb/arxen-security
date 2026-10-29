@@ -1,0 +1,446 @@
+---
+import Icon from './Icon.astro';
+import { fabricantes } from '../data/fabricantes';
+import { solucoesDoFabricante } from '../data/solucoes';
+import { FORMULARIO } from '../config/site';
+import { rotas } from '../lib/utils';
+
+interface Props {
+  perfilInicial?: 'empresa' | 'revenda';
+  id?: string;
+}
+const { perfilInicial = 'empresa', id = 'form-contato' } = Astro.props;
+const pendente = !FORMULARIO.endpoint;
+---
+
+<form
+  class="form"
+  id={id}
+  novalidate
+  data-form-contato
+  data-endpoint={FORMULARIO.endpoint ?? ''}
+  data-tempo-minimo={FORMULARIO.tempoMinimoMs}
+  aria-describedby={pendente ? `${id}-pendente` : undefined}
+>
+  {
+    pendente && (
+      <p class="form__pendente" id={`${id}-pendente`}>
+        <Icon nome="info" tamanho={18} />
+        <span>
+          <strong>Ambiente de apresentação.</strong> O envio online ainda não foi conectado a um destino. Você pode preencher para conhecer o fluxo, mas nenhum dado será
+          enviado ou armazenado.
+        </span>
+      </p>
+    )
+  }
+
+  <div class="form__resumo-erros" role="alert" tabindex="-1" hidden data-resumo-erros></div>
+
+  <fieldset class="form__perfil">
+    <legend>Você é</legend>
+    <label class="opcao">
+      <input type="radio" name="perfil" value="empresa" checked={perfilInicial === 'empresa'} />
+      <span class="opcao__caixa">
+        <Icon nome="empresa" />
+        <span><strong>Empresa</strong><small>Quero proteger o meu negócio</small></span>
+      </span>
+    </label>
+    <label class="opcao">
+      <input type="radio" name="perfil" value="revenda" checked={perfilInicial === 'revenda'} />
+      <span class="opcao__caixa">
+        <Icon nome="revenda" />
+        <span><strong>Revenda ou empresa de TI</strong><small>Quero oferecer soluções aos meus clientes</small></span>
+      </span>
+    </label>
+  </fieldset>
+
+  <div class="form__grade">
+    <div class="campo">
+      <label for={`${id}-nome`}>Nome <span aria-hidden="true">*</span></label>
+      <input id={`${id}-nome`} name="nome" type="text" autocomplete="name" required minlength="2" maxlength="120" />
+      <p class="campo__erro" id={`${id}-nome-erro`} hidden></p>
+    </div>
+    <div class="campo">
+      <label for={`${id}-email`}>E-mail corporativo <span aria-hidden="true">*</span></label>
+      <input id={`${id}-email`} name="email" type="email" autocomplete="email" required maxlength="160" inputmode="email" />
+      <p class="campo__erro" id={`${id}-email-erro`} hidden></p>
+    </div>
+    <div class="campo">
+      <label for={`${id}-empresa`}>Empresa <span aria-hidden="true">*</span></label>
+      <input id={`${id}-empresa`} name="empresa" type="text" autocomplete="organization" required minlength="2" maxlength="160" />
+      <p class="campo__erro" id={`${id}-empresa-erro`} hidden></p>
+    </div>
+    <div class="campo">
+      <label for={`${id}-telefone`}>Telefone ou WhatsApp <span class="campo__opc">opcional</span></label>
+      <input id={`${id}-telefone`} name="telefone" type="tel" autocomplete="tel" maxlength="30" inputmode="tel" />
+      <p class="campo__erro" id={`${id}-telefone-erro`} hidden></p>
+    </div>
+
+    <div class="campo campo--largo">
+      <label for={`${id}-interesse`}>Solução ou fabricante de interesse</label>
+      <select id={`${id}-interesse`} name="interesse">
+        <option value="">Ainda não sei — quero orientação</option>
+        {
+          fabricantes.map((f) => (
+            <optgroup label={f.nome}>
+              <option value={`fabricante:${f.slug}`}>{f.nome} — portfólio geral</option>
+              {solucoesDoFabricante(f.slug).map((s) => (
+                <option value={`solucao:${s.slug}`}>{s.nome}</option>
+              ))}
+            </optgroup>
+          ))
+        }
+      </select>
+    </div>
+
+    <div class="campo" data-so-perfil="empresa">
+      <label for={`${id}-porte`}>Porte da empresa <span class="campo__opc">opcional</span></label>
+      <select id={`${id}-porte`} name="porte">
+        <option value="">Selecione</option>
+        <option>Até 50 colaboradores</option>
+        <option>51 a 250 colaboradores</option>
+        <option>251 a 1.000 colaboradores</option>
+        <option>Mais de 1.000 colaboradores</option>
+      </select>
+    </div>
+    <div class="campo" data-so-perfil="empresa">
+      <label for={`${id}-tipo-pedido`}>O que você procura <span class="campo__opc">opcional</span></label>
+      <select id={`${id}-tipo-pedido`} name="tipoPedido">
+        <option value="">Selecione</option>
+        <option>Proposta comercial</option>
+        <option>Avaliação do ambiente</option>
+        <option>Demonstração</option>
+        <option>Renovação ou ampliação de licenças</option>
+      </select>
+    </div>
+
+    <div class="campo" data-so-perfil="revenda" hidden>
+      <label for={`${id}-atuacao`}>Como sua empresa atua <span class="campo__opc">opcional</span></label>
+      <select id={`${id}-atuacao`} name="atuacao">
+        <option value="">Selecione</option>
+        <option>Revenda de software e licenças</option>
+        <option>Provedor de serviços gerenciados (MSP/MSSP)</option>
+        <option>Integrador ou consultoria de TI</option>
+        <option>Outro</option>
+      </select>
+    </div>
+    <div class="campo" data-so-perfil="revenda" hidden>
+      <label for={`${id}-assunto-revenda`}>Assunto <span class="campo__opc">opcional</span></label>
+      <select id={`${id}-assunto-revenda`} name="assuntoRevenda">
+        <option value="">Selecione</option>
+        <option>Conhecer o portfólio</option>
+        <option>Licenciamento para um cliente</option>
+        <option>Oportunidade comercial em andamento</option>
+      </select>
+    </div>
+
+    <div class="campo campo--largo">
+      <label for={`${id}-mensagem`}>Conte um pouco do cenário <span aria-hidden="true">*</span></label>
+      <textarea id={`${id}-mensagem`} name="mensagem" rows="5" required minlength="15" maxlength="3000" placeholder="Ex.: quantidade de computadores, ferramentas atuais, o que motivou a busca."></textarea>
+      <p class="campo__erro" id={`${id}-mensagem-erro`} hidden></p>
+    </div>
+  </div>
+
+  <!-- Campo isca: invisível para pessoas, preenchido por robôs. -->
+  <div class="form__isca" aria-hidden="true">
+    <label for={`${id}-site`}>Não preencha este campo</label>
+    <input id={`${id}-site`} name="site" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="campo campo--check">
+    <label class="check">
+      <input id={`${id}-consentimento`} name="consentimento" type="checkbox" required />
+      <span>
+        Concordo que a ARXEN use estes dados para responder à minha solicitação, conforme a <a href={rotas.privacidade()}>política de privacidade</a>. <span aria-hidden="true">*</span>
+      </span>
+    </label>
+    <p class="campo__erro" id={`${id}-consentimento-erro`} hidden></p>
+  </div>
+
+  <div class="form__rodape">
+    <button class="btn btn--primario form__enviar" type="submit" data-enviar>
+      <span class="form__enviar-texto">Enviar solicitação</span>
+      <span class="form__spinner" aria-hidden="true"></span>
+    </button>
+    <p class="form__nota">* Campos obrigatórios</p>
+  </div>
+
+  <div class="form__status" role="status" aria-live="polite" data-status></div>
+</form>
+
+<style>
+  .form {
+    display: grid;
+    gap: 28px;
+  }
+  .form__pendente {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--r-2);
+    background: #fff8e6;
+    border: 1px solid #f0dca8;
+    color: #5c4300;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .form__pendente :global(.icone) {
+    margin-top: 2px;
+  }
+  .form__resumo-erros {
+    padding: 14px 16px;
+    border-radius: var(--r-2);
+    background: #fdecea;
+    border: 1px solid #f3c4bf;
+    color: #7a1d15;
+    font-size: 0.92rem;
+  }
+  .form__resumo-erros :global(ul) {
+    margin-top: 6px;
+    padding-left: 1.2em;
+  }
+  .form__resumo-erros :global(a) {
+    color: inherit;
+  }
+
+  .form__perfil {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .form__perfil legend {
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding: 0;
+  }
+  @media (min-width: 640px) {
+    .form__perfil {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .opcao {
+    position: relative;
+    cursor: pointer;
+  }
+  .opcao input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .opcao__caixa {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    align-items: start;
+    padding: 16px 18px;
+    border: 1px solid var(--line-l-2);
+    border-radius: var(--r-2);
+    background: var(--white);
+    transition: border-color var(--t-1), box-shadow var(--t-1), background var(--t-1);
+  }
+  .opcao__caixa :global(.icone) {
+    color: var(--tx-l-2);
+  }
+  .opcao__caixa strong {
+    display: block;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .opcao__caixa small {
+    display: block;
+    color: var(--tx-l-2);
+    font-size: 0.85rem;
+    margin-top: 2px;
+  }
+  .opcao input:checked + .opcao__caixa {
+    border-color: var(--blue-ink);
+    box-shadow: inset 0 0 0 1px var(--blue-ink);
+    background: #f5f8ff;
+  }
+  .opcao input:checked + .opcao__caixa :global(.icone) {
+    color: var(--blue-ink);
+  }
+  .opcao input:focus-visible + .opcao__caixa {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+  }
+
+  .form__grade {
+    display: grid;
+    gap: 20px;
+  }
+  @media (min-width: 640px) {
+    .form__grade {
+      grid-template-columns: 1fr 1fr;
+    }
+    .campo--largo {
+      grid-column: 1 / -1;
+    }
+  }
+  .campo {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+  .campo[hidden] {
+    display: none;
+  }
+  .campo label {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .campo__opc {
+    font-weight: 400;
+    color: var(--tx-l-2);
+    font-size: 0.82rem;
+    margin-left: 4px;
+  }
+  .campo input:not([type='checkbox']),
+  .campo select,
+  .campo textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 12px 14px;
+    border: 1px solid var(--line-l-2);
+    border-radius: var(--r-1);
+    background: var(--white);
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color var(--t-1), box-shadow var(--t-1);
+  }
+  .campo textarea {
+    resize: vertical;
+    min-height: 132px;
+  }
+  .campo select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--tx-l-2) 50%), linear-gradient(135deg, var(--tx-l-2) 50%, transparent 50%);
+    background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 40px;
+  }
+  .campo input:hover,
+  .campo select:hover,
+  .campo textarea:hover {
+    border-color: var(--tx-l-2);
+  }
+  .campo input:focus,
+  .campo select:focus,
+  .campo textarea:focus {
+    outline: none;
+    border-color: var(--blue-ink);
+    box-shadow: 0 0 0 3px rgba(27, 85, 214, 0.18);
+  }
+  .campo [aria-invalid='true'] {
+    border-color: var(--erro) !important;
+  }
+  .campo__erro {
+    color: var(--erro);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .check {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    align-items: start;
+    font-weight: 400 !important;
+    font-size: 0.9rem !important;
+    color: var(--tx-l-2);
+    cursor: pointer;
+  }
+  .check input {
+    width: 20px;
+    height: 20px;
+    margin: 1px 0 0;
+    accent-color: var(--blue-ink);
+  }
+  .check a {
+    color: var(--blue-ink);
+  }
+
+  .form__isca {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form__rodape {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 24px;
+  }
+  .form__nota {
+    font-size: 0.84rem;
+    color: var(--tx-l-2);
+  }
+  .form__enviar {
+    min-width: 220px;
+  }
+  .form__spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: girar 700ms linear infinite;
+  }
+  .form.enviando .form__spinner {
+    display: inline-block;
+  }
+  .form.enviando .form__enviar {
+    cursor: progress;
+    opacity: 0.85;
+  }
+  @keyframes girar {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .form__status:empty {
+    display: none;
+  }
+  .form__status {
+    padding: 18px 20px;
+    border-radius: var(--r-2);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .form__status[data-tipo='ok'] {
+    background: #e9f6ef;
+    border: 1px solid #b9e1cb;
+    color: #0f5133;
+  }
+  .form__status[data-tipo='erro'] {
+    background: #fdecea;
+    border: 1px solid #f3c4bf;
+    color: #7a1d15;
+  }
+  .form__status[data-tipo='pendente'] {
+    background: #fff8e6;
+    border: 1px solid #f0dca8;
+    color: #5c4300;
+  }
+  .form__status :global(strong) {
+    display: block;
+    margin-bottom: 4px;
+  }
+  .form__status :global(button) {
+    margin-top: 12px;
+  }
+</style>
+
+<script>
+  import { iniciarFormularios } from '../scripts/formulario';
+  iniciarFormularios();
+</script>

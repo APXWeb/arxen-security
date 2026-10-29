@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import Trilha from '../components/Trilha.astro';
+import { CONTATO, FORMULARIO, SITE } from '../config/site';
+---
+
+<Base titulo="Política de privacidade" descricao="Como a ARXEN Security trata os dados enviados pelos formulários do site.">
+  <section class="secao--compacta">
+    <div class="wrap">
+      <Trilha itens={[{ rotulo: 'Privacidade' }]} />
+      <article class="prosa priv">
+        <h1>Política de privacidade</h1>
+        <p class="lead">Esta página descreve como os dados enviados pelo site da {SITE.nome} são tratados.</p>
+        <p class="priv__aviso">
+          <strong>Minuta para validação.</strong> Este texto é uma base inicial e deve ser revisado pela ARXEN e por sua assessoria jurídica antes da publicação definitiva, incluindo a identificação do controlador e do encarregado (DPO).
+        </p>
+
+        <h2>Quais dados coletamos</h2>
+        <p>Pelo formulário de contato: nome, e-mail, empresa, telefone (opcional), perfil (empresa ou revenda), solução de interesse e a mensagem enviada. Não coletamos dados sensíveis pelo site.</p>
+
+        <h2>Para que usamos</h2>
+        <ul>
+          <li>Responder à solicitação de informações, avaliação, demonstração ou proposta.</li>
+          <li>Registrar o histórico da conversa comercial iniciada pelo visitante.</li>
+        </ul>
+        <p>A base legal é o consentimento informado no envio e o legítimo interesse em responder a um contato iniciado pelo titular, nos termos da LGPD (Lei 13.709/2018).</p>
+
+        <h2>Compartilhamento</h2>
+        <p>Os dados não são vendidos. Podem ser compartilhados com o fabricante da solução de interesse quando necessário para elaborar a proposta, mediante informação prévia ao titular.</p>
+
+        <h2>Armazenamento</h2>
+        <p>
+          {
+            FORMULARIO.endpoint
+              ? 'Os dados são transmitidos por conexão segura ao serviço de recebimento de formulários utilizado pela ARXEN.'
+              : 'No momento, o formulário do site não está conectado a nenhum serviço de recebimento: nenhum dado digitado é enviado ou armazenado.'
+          }{' '}
+          O site não utiliza cookies de rastreamento nem guarda dados do formulário no navegador.
+        </p>
+
+        <h2>Seus direitos</h2>
+        <p>Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento{CONTATO.email ? <> pelo e-mail <a href={`mailto:${CONTATO.email}`}>{CONTATO.email}</a></> : ' pelos canais de contato da ARXEN'}.</p>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .priv {
+    margin-top: 32px;
+  }
+  .priv h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  .priv__aviso {
+    padding: 16px 18px;
+    border-radius: var(--r-2);
+    background: #fff8e6;
+    border: 1px solid #f0dca8;
+    color: #5c4300;
+    font-size: 0.92rem;
+  }
+  .priv a {
+    color: var(--blue-ink);
+  }
+</style>

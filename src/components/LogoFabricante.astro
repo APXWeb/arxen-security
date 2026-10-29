@@ -1,0 +1,33 @@
+---
+import type { Fabricante } from '../data/tipos';
+import { url } from '../lib/utils';
+
+interface Props {
+  fabricante: Fabricante;
+  /** Área visual de referência (px²) — equilibra logos largas e compactas. */
+  area?: number;
+  larguraMax?: number;
+  carregamento?: 'lazy' | 'eager';
+}
+
+const { fabricante: f, area = 3400, larguraMax = 190, carregamento = 'lazy' } = Astro.props;
+const proporcao = f.logo.largura / f.logo.altura;
+const escala = f.logo.escala ?? 1;
+let altura = Math.sqrt(area / proporcao) * escala;
+let largura = altura * proporcao;
+if (largura > larguraMax * escala) {
+  largura = larguraMax * escala;
+  altura = largura / proporcao;
+}
+---
+
+<img
+  class="logo-fab"
+  src={url(f.logo.src)}
+  alt={`Logo ${f.nome}`}
+  width={Math.round(largura)}
+  height={Math.round(altura)}
+  style={`width:${Math.round(largura)}px;height:auto`}
+  loading={carregamento}
+  decoding="async"
+/>

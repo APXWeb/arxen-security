@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "instrument sans",
+        "createdAt": "2026-10-29T17:34:22.203Z",
+        "reason": "Claude decided: Instrument Sans was chosen deliberately as the ARXEN corporate face (paired with IBM Plex Mono), not a default fallback"
+      }
+    ]
+  }
+}

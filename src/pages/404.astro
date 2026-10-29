@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { rotas } from '../lib/utils';
+---
+
+<Base titulo="Página não encontrada" descricao="A página procurada não existe ou mudou de endereço.">
+  <section class="s-escura nf">
+    <div class="wrap">
+      <p class="rotulo">Erro 404</p>
+      <h1>Esta página não foi encontrada.</h1>
+      <p class="lead">O endereço pode ter mudado. Use o catálogo para localizar a solução que procura.</p>
+      <div class="acoes">
+        <a class="btn btn--primario" href={rotas.solucoes()}>Ir para o catálogo <Icon nome="seta" /></a>
+        <a class="btn btn--contorno" href={rotas.inicio()}>Página inicial</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: clamp(80px, 14vw, 180px);
+  }
+  .nf .wrap {
+    display: grid;
+    gap: 22px;
+    justify-items: start;
+    align-content: start;
+  }
+  .nf h1 {
+    max-width: 16ch;
+  }
+</style>

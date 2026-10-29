@@ -1,0 +1,461 @@
+---
+import Icon from './Icon.astro';
+import { categorias } from '../data/categorias';
+import { fabricantes } from '../data/fabricantes';
+import { rotas, url } from '../lib/utils';
+
+interface Props {
+  secaoAtiva?: string;
+}
+const { secaoAtiva } = Astro.props;
+const ativo = (s: string) => (secaoAtiva === s ? 'page' : undefined);
+---
+
+<header class="topo" data-topo>
+  <div class="wrap topo__barra">
+    <a class="topo__marca" href={rotas.inicio()} aria-label="ARXEN Security — página inicial">
+      <picture>
+        <source srcset={url('img/brand/arxen-logo.webp')} type="image/webp" />
+        <img src={url('img/brand/arxen-logo.png')} alt="ARXEN Security" width="640" height="212" />
+      </picture>
+    </a>
+
+    <nav class="topo__nav" aria-label="Navegação principal">
+      <ul class="topo__lista">
+        <li class="topo__item topo__item--mega" data-menu>
+          <button class="topo__link" type="button" aria-expanded="false" aria-controls="painel-solucoes" aria-current={ativo('solucoes')}>
+            Soluções <span class="topo__seta" aria-hidden="true"></span>
+          </button>
+          <div class="painel painel--mega" id="painel-solucoes" hidden>
+            <div class="painel__grade">
+              <div>
+                <p class="painel__titulo">Por necessidade</p>
+                <ul class="painel__cats">
+                  {
+                    categorias.map((c) => (
+                      <li>
+                        <a href={rotas.categoria(c.slug)}>
+                          <Icon nome={c.icone} tamanho={20} />
+                          <span>{c.nome}</span>
+                        </a>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+              <a class="painel__destaque" href={rotas.solucoes()}>
+                <span class="painel__titulo">Catálogo completo</span>
+                <strong>Busque por produto, fabricante ou necessidade</strong>
+                <span class="link-seta"><span>Abrir catálogo</span><Icon nome="seta" /></span>
+              </a>
+            </div>
+          </div>
+        </li>
+        <li class="topo__item" data-menu>
+          <button class="topo__link" type="button" aria-expanded="false" aria-controls="painel-fabricantes" aria-current={ativo('fabricantes')}>
+            Fabricantes <span class="topo__seta" aria-hidden="true"></span>
+          </button>
+          <div class="painel painel--estreito" id="painel-fabricantes" hidden>
+            <ul class="painel__fabs">
+              {
+                fabricantes.map((f) => (
+                  <li>
+                    <a href={rotas.fabricante(f.slug)}>{f.nome}</a>
+                  </li>
+                ))
+              }
+            </ul>
+            <a class="link-seta painel__rodape" href={rotas.fabricantes()}><span>Ver todos os fabricantes</span><Icon nome="seta" /></a>
+          </div>
+        </li>
+        <li class="topo__item"><a class="topo__link" href={rotas.revendas()} aria-current={ativo('revendas')}>Para revendas</a></li>
+        <li class="topo__item"><a class="topo__link" href={rotas.sobre()} aria-current={ativo('sobre')}>Sobre</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--primario btn--pequeno topo__cta" href={rotas.contato()}>Falar com especialista</a>
+
+    <button class="topo__menu" type="button" aria-expanded="false" aria-controls="menu-movel" data-abrir-menu>
+      <Icon nome="menu" class="ico-abrir" />
+      <Icon nome="fechar" class="ico-fechar" />
+      <span class="sr-only">Menu</span>
+    </button>
+  </div>
+
+  <div class="movel" id="menu-movel" hidden>
+    <nav class="wrap movel__nav" aria-label="Navegação principal (celular)">
+      <details>
+        <summary>Soluções</summary>
+        <ul>
+          <li><a href={rotas.solucoes()}><strong>Catálogo completo</strong></a></li>
+          {categorias.map((c) => <li><a href={rotas.categoria(c.slug)}>{c.nome}</a></li>)}
+        </ul>
+      </details>
+      <details>
+        <summary>Fabricantes</summary>
+        <ul>
+          <li><a href={rotas.fabricantes()}><strong>Todos os fabricantes</strong></a></li>
+          {fabricantes.map((f) => <li><a href={rotas.fabricante(f.slug)}>{f.nome}</a></li>)}
+        </ul>
+      </details>
+      <a class="movel__link" href={rotas.revendas()}>Para revendas e empresas de TI</a>
+      <a class="movel__link" href={rotas.sobre()}>Sobre a ARXEN</a>
+      <a class="btn btn--primario movel__cta" href={rotas.contato()}>Falar com especialista <Icon nome="seta" /></a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .topo {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--t-2), box-shadow var(--t-2);
+  }
+  @supports (backdrop-filter: blur(8px)) {
+    .topo {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: saturate(1.4) blur(12px);
+    }
+  }
+  .topo.rolado {
+    border-color: var(--line-l);
+  }
+  .topo__barra {
+    position: relative;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .topo__marca {
+    flex: none;
+    display: block;
+    border-radius: 2px;
+  }
+  .topo__marca img {
+    height: 44px;
+    width: auto;
+  }
+  .topo__nav {
+    margin-left: auto;
+    display: none;
+  }
+  .topo__lista {
+    list-style: none;
+    display: flex;
+    gap: 4px;
+  }
+  .topo__item {
+    position: relative;
+  }
+  .topo__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 14px;
+    border: 0;
+    background: none;
+    border-radius: var(--r-1);
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: var(--tx-l-1);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--t-1);
+  }
+  .topo__link:hover,
+  .topo__link[aria-expanded='true'] {
+    background: var(--paper);
+  }
+  .topo__link[aria-current='page'] {
+    color: var(--blue-ink);
+  }
+  .topo__seta {
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform var(--t-2) var(--ease);
+  }
+  [aria-expanded='true'] > .topo__seta {
+    transform: translateY(1px) rotate(225deg);
+  }
+  .topo__cta {
+    display: none;
+  }
+
+  .painel {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: -12px;
+    width: min(760px, 80vw);
+    background: var(--white);
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-3);
+    box-shadow: 0 24px 60px -24px rgba(5, 10, 20, 0.28);
+    padding: 22px;
+    animation: painel-entra 200ms var(--ease);
+  }
+  .painel--estreito {
+    width: 340px;
+  }
+  /* O painel largo se alinha à direita da barra para nunca sair da tela. */
+  .topo__item--mega {
+    position: static;
+  }
+  .painel--mega {
+    left: auto;
+    right: var(--gutter);
+    top: calc(100% - 4px);
+    width: min(780px, calc(100% - var(--gutter) * 2));
+  }
+  @keyframes painel-entra {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+  .painel__grade {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 22px;
+  }
+  .painel__titulo {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tx-l-2);
+    margin: 4px 0 12px 10px;
+  }
+  .painel__cats {
+    list-style: none;
+    display: grid;
+    gap: 2px;
+  }
+  .painel__cats a,
+  .painel__fabs a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 10px;
+    border-radius: var(--r-1);
+    text-decoration: none;
+    font-size: 0.93rem;
+    line-height: 1.3;
+    transition: background var(--t-1);
+  }
+  .painel__cats a :global(.icone) {
+    flex: none;
+    color: var(--blue-ink);
+  }
+  .painel__cats a:hover,
+  .painel__fabs a:hover {
+    background: var(--paper);
+  }
+  .painel__destaque {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 20px;
+    border-radius: var(--r-2);
+    background: var(--ink-0);
+    color: var(--tx-d-1);
+    text-decoration: none;
+  }
+  .painel__destaque .painel__titulo {
+    margin: 0;
+    color: var(--tx-d-2);
+  }
+  .painel__destaque strong {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .painel__destaque .link-seta {
+    color: var(--blue);
+  }
+  .painel__fabs {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .painel__rodape {
+    margin: 10px 0 0 10px;
+  }
+
+  .topo__menu {
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line-l);
+    border-radius: var(--r-1);
+    background: var(--white);
+    cursor: pointer;
+  }
+  .topo__menu :global(.ico-fechar),
+  .topo__menu[aria-expanded='true'] :global(.ico-abrir) {
+    display: none;
+  }
+  .topo__menu[aria-expanded='true'] :global(.ico-fechar) {
+    display: block;
+  }
+
+  /* Ancorado no cabeçalho: o backdrop-filter dele vira o bloco de contenção. */
+  .movel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--header-h));
+    height: calc(100dvh - var(--header-h));
+    background: var(--white);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-top: 1px solid var(--line-l);
+  }
+  .movel__nav {
+    display: flex;
+    flex-direction: column;
+    padding-block: 12px 40px;
+  }
+  .movel details {
+    border-bottom: 1px solid var(--line-l);
+  }
+  .movel summary,
+  .movel__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 60px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .movel__link {
+    border-bottom: 1px solid var(--line-l);
+  }
+  .movel summary::-webkit-details-marker {
+    display: none;
+  }
+  .movel summary::after {
+    content: '+';
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: var(--tx-l-2);
+  }
+  .movel details[open] summary::after {
+    content: '–';
+  }
+  .movel details ul {
+    list-style: none;
+    padding-bottom: 14px;
+  }
+  .movel details a {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    color: var(--tx-l-2);
+    text-decoration: none;
+  }
+  .movel details a strong {
+    color: var(--blue-ink);
+  }
+  .movel__cta {
+    margin-top: 28px;
+  }
+
+  @media (min-width: 1080px) {
+    .topo__nav {
+      display: block;
+    }
+    .topo__cta {
+      display: inline-flex;
+    }
+    .topo__menu,
+    .movel {
+      display: none !important;
+    }
+  }
+  @media (max-width: 420px) {
+    .topo__marca img {
+      height: 38px;
+    }
+  }
+</style>
+
+<script>
+  const topo = document.querySelector<HTMLElement>('[data-topo]');
+  if (topo) {
+    const aoRolar = () => topo.classList.toggle('rolado', window.scrollY > 8);
+    aoRolar();
+    window.addEventListener('scroll', aoRolar, { passive: true });
+
+    // Painéis da navegação desktop: clique, teclado e Escape.
+    const itens = [...topo.querySelectorAll<HTMLElement>('[data-menu]')];
+    const fecharTodos = (exceto?: HTMLElement) =>
+      itens.forEach((item) => {
+        if (item === exceto) return;
+        item.querySelector('button')?.setAttribute('aria-expanded', 'false');
+        item.querySelector<HTMLElement>('.painel')?.setAttribute('hidden', '');
+      });
+
+    itens.forEach((item) => {
+      const botao = item.querySelector('button')!;
+      const painel = item.querySelector<HTMLElement>('.painel')!;
+      botao.addEventListener('click', () => {
+        const abrir = botao.getAttribute('aria-expanded') !== 'true';
+        fecharTodos(item);
+        botao.setAttribute('aria-expanded', String(abrir));
+        painel.toggleAttribute('hidden', !abrir);
+      });
+      item.addEventListener('focusout', (e) => {
+        if (!item.contains(e.relatedTarget as Node)) {
+          botao.setAttribute('aria-expanded', 'false');
+          painel.setAttribute('hidden', '');
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!itens.some((i) => i.contains(e.target as Node))) fecharTodos();
+    });
+
+    // Menu do celular.
+    const btnMenu = topo.querySelector<HTMLButtonElement>('[data-abrir-menu]')!;
+    const movel = topo.querySelector<HTMLElement>('#menu-movel')!;
+    const definirMenu = (abrir: boolean) => {
+      btnMenu.setAttribute('aria-expanded', String(abrir));
+      movel.toggleAttribute('hidden', !abrir);
+      document.body.style.overflow = abrir ? 'hidden' : '';
+    };
+    btnMenu.addEventListener('click', () => definirMenu(btnMenu.getAttribute('aria-expanded') !== 'true'));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const aberto = itens.find((i) => i.querySelector('button')?.getAttribute('aria-expanded') === 'true');
+      if (aberto) {
+        fecharTodos();
+        aberto.querySelector('button')?.focus();
+      }
+      if (btnMenu.getAttribute('aria-expanded') === 'true') {
+        definirMenu(false);
+        btnMenu.focus();
+      }
+    });
+    window.matchMedia('(min-width: 1080px)').addEventListener('change', (m) => m.matches && definirMenu(false));
+  }
+</script>

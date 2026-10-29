@@ -1,0 +1,612 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import HeroCamadas from '../components/HeroCamadas.astro';
+import CardSolucao from '../components/CardSolucao.astro';
+import LogoFabricante from '../components/LogoFabricante.astro';
+import ChamadaFinal from '../components/ChamadaFinal.astro';
+import { categorias } from '../data/categorias';
+import { fabricantes } from '../data/fabricantes';
+import { solucoes, solucoesDaCategoria } from '../data/solucoes';
+import { SITE } from '../config/site';
+import { rotas } from '../lib/utils';
+
+const destaques = solucoes.filter((s) => s.destaque).slice(0, 6);
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.nome,
+  url: new URL(rotas.inicio(), Astro.site).href,
+  logo: new URL(rotas.inicio() + 'img/brand/arxen-logo.png', Astro.site).href,
+  description: SITE.descricaoPadrao,
+};
+---
+
+<Base
+  titulo="ARXEN Security — Segurança digital para proteger o que move sua empresa"
+  tituloCompleto
+  descricao="Catálogo de soluções de cibersegurança para empresas e revendas: proteção de endpoints, DLP, e-mail, backup, gestão de acessos, vulnerabilidades e detecção de ameaças."
+  jsonLd={ld}
+>
+  <!-- ABERTURA -->
+  <section class="hero s-escura" aria-labelledby="hero-titulo">
+    <div class="wrap hero__grade">
+      <div class="hero__texto">
+        <p class="rotulo revelar">ARXEN Security · Segurança de Dados</p>
+        <h1 id="hero-titulo" class="revelar" style="--atraso:60ms">Segurança digital para proteger o que move sua empresa.</h1>
+        <p class="lead revelar" style="--atraso:120ms">
+          Soluções de cibersegurança para dados, dispositivos, acessos e operações — escolhidas a partir do cenário de cada negócio, e não de um pacote padrão.
+        </p>
+        <div class="acoes revelar" style="--atraso:180ms">
+          <a class="btn btn--primario" href={rotas.solucoes()}>Conhecer soluções <Icon nome="seta" /></a>
+          <a class="btn btn--contorno" href={rotas.contato()}>Falar com um especialista</a>
+        </div>
+        <dl class="hero__numeros revelar" style="--atraso:240ms">
+          <div><dt>Necessidades mapeadas</dt><dd>{categorias.length}</dd></div>
+          <div><dt>Fabricantes no catálogo</dt><dd>{fabricantes.length}</dd></div>
+          <div><dt>Soluções detalhadas</dt><dd>{solucoes.length}</dd></div>
+        </dl>
+      </div>
+      <div class="hero__visual">
+        <HeroCamadas />
+      </div>
+    </div>
+  </section>
+
+  <!-- NECESSIDADES -->
+  <section class="secao" aria-labelledby="nec-titulo">
+    <div class="wrap">
+      <div class="cabeca cabeca--split">
+        <div>
+          <p class="rotulo revelar">Por onde começar</p>
+          <h2 id="nec-titulo" class="revelar" style="--atraso:60ms">Comece pelo problema, não pelo produto.</h2>
+        </div>
+        <p class="lead revelar" style="--atraso:120ms">
+          Cada necessidade reúne as soluções que a atendem, de fabricantes diferentes. Assim fica mais fácil comparar abordagens e combinar camadas sem sobreposição.
+        </p>
+      </div>
+
+      <ol class="necessidades">
+        {
+          categorias.map((c, i) => {
+            const n = solucoesDaCategoria(c.slug).length;
+            return (
+              <li class="revelar" style={`--atraso:${(i % 2) * 60}ms`}>
+                <a class="nec" href={rotas.categoria(c.slug)}>
+                  <span class="nec__num">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="nec__icone">
+                    <Icon nome={c.icone} tamanho={26} />
+                  </span>
+                  <span class="nec__corpo">
+                    <span class="nec__nome">{c.nome}</span>
+                    <span class="nec__resumo">{c.resumo}</span>
+                  </span>
+                  <span class="nec__qtd">
+                    {n} {n === 1 ? 'solução' : 'soluções'}
+                    <Icon nome="seta" tamanho={18} />
+                  </span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- FABRICANTES -->
+  <section class="secao s-escura fabs" aria-labelledby="fab-titulo">
+    <div class="wrap">
+      <div class="cabeca cabeca--split">
+        <div>
+          <p class="rotulo revelar">Fabricantes</p>
+          <h2 id="fab-titulo" class="revelar" style="--atraso:60ms">Um portfólio com especialistas em cada camada.</h2>
+        </div>
+        <p class="lead revelar" style="--atraso:120ms">
+          Do endpoint ao SOC, cada fabricante tem um foco claro. Abra uma página para ver as soluções, os cenários indicados e como cada produto funciona.
+        </p>
+      </div>
+
+      <ul class="fabs__mural">
+        {
+          fabricantes.map((f, i) => (
+            <li class="revelar" style={`--atraso:${(i % 3) * 70}ms`}>
+              <a class="fabs__item" href={rotas.fabricante(f.slug)}>
+                <span class="fabs__placa">
+                  <LogoFabricante fabricante={f} area={3600} larguraMax={180} />
+                </span>
+                <span class="fabs__info">
+                  <span class="fabs__nome">{f.nome}</span>
+                  <span class="fabs__foco">{f.foco}</span>
+                </span>
+                <Icon nome="seta" tamanho={18} class="fabs__seta" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="fabs__nota">A apresentação dos fabricantes não indica parceria oficial, distribuição autorizada ou certificação junto a eles.</p>
+    </div>
+  </section>
+
+  <!-- DESTAQUES -->
+  <section class="secao s-papel" aria-labelledby="dest-titulo">
+    <div class="wrap">
+      <div class="cabeca dest__cabeca">
+        <div>
+          <p class="rotulo revelar">Soluções em destaque</p>
+          <h2 id="dest-titulo" class="revelar" style="--atraso:60ms">Pontos de partida frequentes.</h2>
+        </div>
+        <a class="link-seta revelar" href={rotas.solucoes()}><span>Ver todas as {solucoes.length} soluções</span><Icon nome="seta" /></a>
+      </div>
+      <div class="dest__grade">
+        {
+          destaques.map((s, i) => (
+            <div class="revelar" style={`--atraso:${(i % 3) * 70}ms`}>
+              <CardSolucao solucao={s} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- PÚBLICOS -->
+  <section class="secao publicos" aria-labelledby="pub-titulo">
+    <div class="wrap">
+      <div class="cabeca">
+        <p class="rotulo revelar">Dois caminhos</p>
+        <h2 id="pub-titulo" class="revelar" style="--atraso:60ms">Para quem protege o próprio negócio <br class="br-lg" />e para quem protege os clientes.</h2>
+      </div>
+      <div class="publicos__grade">
+        <article class="publico publico--empresa revelar">
+          <Icon nome="empresa" tamanho={32} />
+          <h3>Para empresas</h3>
+          <p class="texto-2">Para quem precisa proteger dados, equipamentos e acessos e quer entender quais soluções fazem sentido para o próprio ambiente.</p>
+          <ul class="lista-check">
+            <li><Icon nome="check" /><span>Conversa inicial sobre o cenário e as prioridades</span></li>
+            <li><Icon nome="check" /><span>Indicação das soluções adequadas a cada necessidade</span></li>
+            <li><Icon nome="check" /><span>Avaliação, demonstração ou proposta conforme o produto</span></li>
+          </ul>
+          <a class="btn btn--escuro" href={rotas.contato({ perfil: 'empresa' })}>Encontrar a solução certa <Icon nome="seta" /></a>
+        </article>
+        <article class="publico publico--revenda s-escura revelar" style="--atraso:100ms">
+          <Icon nome="revenda" tamanho={32} />
+          <h3>Para revendas e empresas de TI</h3>
+          <p class="texto-2">Para MSPs, integradores e revendas que querem incluir estas soluções na própria oferta e conversar sobre licenciamento e oportunidades comerciais.</p>
+          <ul class="lista-check">
+            <li><Icon nome="check" /><span>Portfólio organizado por necessidade do cliente final</span></li>
+            <li><Icon nome="check" /><span>Conversa sobre licenciamento e modelos de oferta</span></li>
+            <li><Icon nome="check" /><span>Apoio na avaliação de oportunidades em andamento</span></li>
+          </ul>
+          <a class="btn btn--primario" href={rotas.revendas()}>Conversar sobre parceria comercial <Icon nome="seta" /></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTITUCIONAL -->
+  <section class="secao s-papel inst" aria-labelledby="inst-titulo">
+    <div class="wrap inst__grade">
+      <div class="inst__texto">
+        <p class="rotulo revelar">Sobre a ARXEN</p>
+        <h2 id="inst-titulo" class="revelar" style="--atraso:60ms">Segurança proporcional ao risco de cada empresa.</h2>
+        <p class="lead revelar" style="--atraso:120ms">
+          Não existe pacote de segurança que sirva para todos. Um escritório de contabilidade, uma indústria e um provedor de serviços de TI têm riscos, dados e rotinas diferentes — e a recomendação deve partir disso.
+        </p>
+        <a class="link-seta revelar" href={rotas.sobre()}><span>Conhecer a ARXEN</span><Icon nome="seta" /></a>
+      </div>
+      <ol class="principios">
+        <li class="revelar">
+          <span class="principios__n">01</span>
+          <h3>Entender antes de indicar</h3>
+          <p class="texto-2">O ponto de partida é o ambiente atual: o que existe, o que preocupa e o que precisa ser comprovado.</p>
+        </li>
+        <li class="revelar" style="--atraso:80ms">
+          <span class="principios__n">02</span>
+          <h3>Camadas que se complementam</h3>
+          <p class="texto-2">Cada solução cobre uma superfície. Combiná-las sem sobreposição evita custos e complexidade desnecessários.</p>
+        </li>
+        <li class="revelar" style="--atraso:160ms">
+          <span class="principios__n">03</span>
+          <h3>Clareza sobre cada produto</h3>
+          <p class="texto-2">O que a solução faz, o que não faz e o que depende do ambiente — explicado antes da proposta.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <ChamadaFinal />
+</Base>
+
+<style>
+  /* Abertura */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(56px, 8vw, 104px) clamp(64px, 8vw, 112px);
+  }
+  .hero__grade {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero__texto {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+    align-content: start;
+  }
+  .hero h1 {
+    max-width: 15ch;
+  }
+  .hero__numeros {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 32px;
+    margin: 20px 0 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--line-d);
+    width: 100%;
+    max-width: 520px;
+  }
+  .hero__numeros div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 4px;
+  }
+  .hero__numeros dt {
+    font-size: 0.8rem;
+    color: var(--tx-d-2);
+    line-height: 1.35;
+  }
+  .hero__numeros dd {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .hero__visual {
+    max-width: 480px;
+    width: 100%;
+    justify-self: center;
+  }
+  @media (max-width: 979px) {
+    .hero__visual {
+      max-width: 340px;
+    }
+    .hero__grade {
+      gap: 28px;
+    }
+  }
+  @media (min-width: 980px) {
+    .hero__grade {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: 56px;
+    }
+    .hero__visual {
+      max-width: none;
+    }
+  }
+  @media (max-width: 520px) {
+    .hero__numeros {
+      gap: 18px;
+    }
+    .hero__numeros dd {
+      font-size: 1.6rem;
+    }
+  }
+
+  /* Necessidades */
+  .necessidades {
+    list-style: none;
+    display: grid;
+    border-top: 1px solid var(--line-l);
+  }
+  @media (min-width: 900px) {
+    .necessidades {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 48px;
+    }
+  }
+  .nec {
+    position: relative;
+    display: grid;
+    grid-template-columns: 32px 44px 1fr;
+    gap: 4px 16px;
+    align-items: start;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line-l);
+    text-decoration: none;
+    height: 100%;
+  }
+  .nec::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    width: 100%;
+    background: var(--blue-ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 500ms var(--ease);
+  }
+  .nec:hover::after,
+  .nec:focus-visible::after {
+    transform: scaleX(1);
+  }
+  .nec__num {
+    font-family: var(--f-mono);
+    font-size: 0.78rem;
+    color: var(--tx-l-2);
+    padding-top: 12px;
+  }
+  .nec__icone {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-2);
+    background: var(--paper);
+    color: var(--navy);
+    transition: background var(--t-2), color var(--t-2);
+  }
+  .nec:hover .nec__icone {
+    background: var(--navy);
+    color: #fff;
+  }
+  .nec__corpo {
+    display: grid;
+    gap: 6px;
+  }
+  .nec__nome {
+    font-size: 1.12rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    line-height: 1.3;
+  }
+  .nec__resumo {
+    color: var(--tx-l-2);
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+  .nec__qtd {
+    grid-column: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--blue-ink);
+  }
+  .nec__qtd :global(.icone) {
+    transition: transform var(--t-2) var(--ease);
+  }
+  .nec:hover .nec__qtd :global(.icone) {
+    transform: translateX(4px);
+  }
+
+  /* Fabricantes */
+  .fabs__mural {
+    list-style: none;
+    display: grid;
+    gap: 1px;
+    background: var(--line-d);
+    border: 1px solid var(--line-d);
+    border-radius: var(--r-3);
+    overflow: hidden;
+  }
+  @media (min-width: 700px) {
+    .fabs__mural {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1060px) {
+    .fabs__mural {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .fabs__mural li {
+    background: var(--ink-0);
+  }
+  .fabs__item {
+    position: relative;
+    display: grid;
+    gap: 18px;
+    padding: 20px 20px 24px;
+    height: 100%;
+    text-decoration: none;
+    transition: background var(--t-2);
+  }
+  .fabs__item:hover {
+    background: var(--ink-2);
+  }
+  .fabs__placa {
+    display: grid;
+    place-items: center;
+    height: 112px;
+    border-radius: var(--r-2);
+    background: var(--white);
+    transition: transform var(--t-2) var(--ease);
+  }
+  .fabs__info {
+    display: grid;
+    gap: 4px;
+    padding-right: 28px;
+  }
+  .fabs__nome {
+    font-weight: 600;
+  }
+  .fabs__foco {
+    color: var(--tx-d-2);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .fabs__item :global(.fabs__seta) {
+    position: absolute;
+    right: 20px;
+    bottom: 26px;
+    color: var(--blue);
+    transition: transform var(--t-2) var(--ease);
+  }
+  .fabs__item:hover :global(.fabs__seta) {
+    transform: translateX(4px);
+  }
+  /* No celular o mural vira grade de 2 colunas, só com logo e nome. */
+  @media (max-width: 699px) {
+    .fabs__mural {
+      grid-template-columns: 1fr 1fr;
+    }
+    .fabs__item {
+      padding: 10px 10px 14px;
+      gap: 12px;
+    }
+    .fabs__placa {
+      height: 76px;
+      padding: 8px;
+    }
+    .fabs__foco,
+    .fabs__item :global(.fabs__seta) {
+      display: none;
+    }
+    .fabs__info {
+      padding-right: 0;
+    }
+    .fabs__nome {
+      font-size: 0.88rem;
+    }
+  }
+  .fabs__nota {
+    margin-top: 20px;
+    font-size: 0.82rem;
+    color: var(--tx-d-3);
+  }
+
+  /* Destaques */
+  .dest__cabeca {
+    grid-template-columns: 1fr;
+    align-items: end;
+  }
+  @media (min-width: 800px) {
+    .dest__cabeca {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  .dest__grade {
+    display: grid;
+    gap: 20px;
+  }
+  .dest__grade > div {
+    display: grid;
+  }
+  @media (min-width: 700px) {
+    .dest__grade {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1060px) {
+    .dest__grade {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Públicos */
+  .br-lg {
+    display: none;
+  }
+  @media (min-width: 1000px) {
+    .br-lg {
+      display: inline;
+    }
+  }
+  .publicos__grade {
+    display: grid;
+    gap: 20px;
+  }
+  @media (min-width: 900px) {
+    .publicos__grade {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .publico {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: clamp(28px, 4vw, 48px);
+    border-radius: var(--r-3);
+    align-items: flex-start;
+  }
+  .publico--empresa {
+    background: var(--paper);
+    border: 1px solid var(--line-l);
+  }
+  .publico--empresa > :global(.icone) {
+    color: var(--navy);
+  }
+  .publico--revenda {
+    background: var(--ink-0);
+    background-image: radial-gradient(ellipse 70% 60% at 100% 0%, rgba(10, 58, 133, 0.55), transparent 70%);
+  }
+  .publico--revenda > :global(.icone) {
+    color: var(--blue);
+  }
+  .publico h3 {
+    font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  }
+  .publico .lista-check {
+    margin-block: 6px 12px;
+  }
+  .publico .btn {
+    margin-top: auto;
+    white-space: normal;
+    text-align: left;
+  }
+
+  /* Institucional */
+  .inst__grade {
+    display: grid;
+    gap: 56px;
+  }
+  .inst__texto {
+    display: grid;
+    gap: 22px;
+    align-content: start;
+    justify-items: start;
+    align-content: start;
+  }
+  @media (min-width: 980px) {
+    .inst__grade {
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .inst__texto {
+      position: sticky;
+      top: calc(var(--header-h) + 40px);
+    }
+  }
+  .principios {
+    list-style: none;
+    display: grid;
+  }
+  .principios li {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 8px 16px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line-l-2);
+  }
+  .principios li:last-child {
+    border-bottom: 1px solid var(--line-l-2);
+  }
+  .principios__n {
+    grid-row: span 2;
+    font-family: var(--f-mono);
+    font-size: 0.8rem;
+    color: var(--blue-ink);
+    padding-top: 4px;
+  }
+</style>

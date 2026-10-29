@@ -1,0 +1,90 @@
+---
+import Icon from './Icon.astro';
+import LogoFabricante from './LogoFabricante.astro';
+import type { Fabricante } from '../data/tipos';
+import { solucoesDoFabricante } from '../data/solucoes';
+import { rotas } from '../lib/utils';
+
+interface Props {
+  fabricante: Fabricante;
+  nivel?: 'h2' | 'h3';
+}
+const { fabricante: f, nivel = 'h3' } = Astro.props;
+const total = solucoesDoFabricante(f.slug).length;
+const Titulo = nivel;
+---
+
+<a class="card-fab" href={rotas.fabricante(f.slug)}>
+  <span class="card-fab__placa">
+    <LogoFabricante fabricante={f} />
+  </span>
+  <span class="card-fab__corpo">
+    <Titulo class="card-fab__nome">{f.nome}</Titulo>
+    <span class="card-fab__foco">{f.foco}</span>
+    <span class="card-fab__rodape">
+      <span>{total} {total === 1 ? 'solução' : 'soluções'}</span>
+      <Icon nome="seta" tamanho={18} />
+    </span>
+  </span>
+</a>
+
+<style>
+  .card-fab {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--line-d);
+    border-radius: var(--r-2);
+    background: var(--ink-1);
+    color: var(--tx-d-1);
+    text-decoration: none;
+    overflow: hidden;
+    transition: border-color var(--t-2) var(--ease), background var(--t-2) var(--ease);
+  }
+  .card-fab:hover {
+    border-color: var(--line-d-2);
+    background: var(--ink-2);
+  }
+  .card-fab__placa {
+    display: grid;
+    place-items: center;
+    height: 118px;
+    margin: 8px 8px 0;
+    border-radius: 5px;
+    background: var(--white);
+  }
+  .card-fab__corpo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 20px 18px;
+    flex: 1;
+  }
+  .card-fab__nome {
+    font-size: 1.05rem;
+  }
+  .card-fab__foco {
+    color: var(--tx-d-2);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .card-fab__rodape {
+    margin-top: auto;
+    padding-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--f-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--tx-d-3);
+  }
+  .card-fab__rodape :global(.icone) {
+    color: var(--blue);
+    transition: transform var(--t-2) var(--ease);
+  }
+  .card-fab:hover .card-fab__rodape :global(.icone) {
+    transform: translateX(4px);
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import { rotas } from '../lib/utils';
+
+interface Props {
+  itens: { rotulo: string; href?: string }[];
+  escura?: boolean;
+}
+const { itens, escura = false } = Astro.props;
+const todos = [{ rotulo: 'Início', href: rotas.inicio() }, ...itens];
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: todos.map((it, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: it.rotulo,
+    ...(it.href ? { item: new URL(it.href, Astro.site).href } : {}),
+  })),
+};
+---
+
+<nav class:list={['trilha', { 'trilha--escura': escura }]} aria-label="Você está em">
+  <ol>
+    {
+      todos.map((it, i) =>
+        it.href && i < todos.length - 1 ? (
+          <li><a href={it.href}>{it.rotulo}</a></li>
+        ) : (
+          <li aria-current="page">{it.rotulo}</li>
+        ),
+      )
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(ld)} />
+
+<style>
+  .trilha ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+    font-size: 0.84rem;
+    color: var(--tx-l-2);
+  }
+  .trilha li + li::before {
+    content: '/';
+    margin: 0 10px;
+    opacity: 0.5;
+  }
+  .trilha a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .trilha a:hover {
+    color: var(--blue-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .trilha [aria-current] {
+    color: var(--tx-l-1);
+  }
+  .trilha--escura ol {
+    color: var(--tx-d-3);
+  }
+  .trilha--escura [aria-current] {
+    color: var(--tx-d-2);
+  }
+  .trilha--escura a:hover {
+    color: var(--tx-d-1);
+  }
+</style>
