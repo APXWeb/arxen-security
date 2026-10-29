@@ -28,7 +28,7 @@ export const fabricantes: Fabricante[] = [
         tipo: 'tabela',
         titulo: 'Como os planos ESET PROTECT se organizam',
         intro:
-          'Os planos são cumulativos: cada nível acrescenta camadas ao anterior. A tabela resume o foco de cada um; a composição exata de módulos é confirmada na proposta, pois a ESET revisa os pacotes periodicamente e eles variam por região.',
+          'Os planos reúnem módulos em níveis crescentes de proteção. A tabela resume o que as páginas públicas da ESET indicam para cada nível. Os itens marcados como "A confirmar" e a composição final dependem da oferta vigente no Brasil, que a ESET revisa com frequência, e são definidos na proposta.',
         colunas: ['Entry', 'Advanced', 'Complete', 'Elite'],
         linhas: [
           { rotulo: 'Console de gerenciamento', valores: [true, true, true, true] },
@@ -39,7 +39,7 @@ export const fabricantes: Fabricante[] = [
           { rotulo: 'Segurança para servidor de e-mail', valores: [false, false, true, true] },
           { rotulo: 'Gestão de vulnerabilidades e patches', valores: [false, false, true, true] },
           { rotulo: 'Detecção e resposta estendida (XDR)', valores: [false, false, false, true] },
-          { rotulo: 'Autenticação multifator', valores: [false, false, false, true] },
+          { rotulo: 'Autenticação multifator', valores: [false, false, false, 'A confirmar'] },
         ],
         nota:
           'Referência elaborada a partir das descrições públicas dos planos. Em alguns mercados a ESET passou a adotar novas nomenclaturas; a proposta indica a oferta vigente no Brasil.',
@@ -76,12 +76,12 @@ export const fabricantes: Fabricante[] = [
         linhas: [
           { rotulo: 'Políticas de DLP para e-mail, dispositivos e fluxo de dados', valores: [true, true, true, true] },
           { rotulo: 'Classificação de dados com apoio de IA', valores: [false, true, true, false] },
-          { rotulo: 'Cópia sombra de arquivos em incidentes', valores: [false, true, true, true] },
-          { rotulo: 'Integração com SIEM', valores: [false, true, true, true] },
+          { rotulo: 'Cópia sombra de arquivos em incidentes', valores: [false, true, true, 'A confirmar'] },
+          { rotulo: 'Integração com SIEM', valores: [false, true, true, 'A confirmar'] },
           { rotulo: 'Relatórios disponíveis', valores: ['Até 5', 'Até 20', 'Ilimitados', 'Ilimitados'] },
           { rotulo: 'Retenção de dados', valores: ['12 meses', '24 meses', '36 meses', 'Conforme o servidor'] },
         ],
-        nota: 'Resumo baseado na página oficial de edições da Safetica. Detalhes de licenciamento são confirmados na proposta.',
+        nota: 'Resumo baseado na página oficial de edições da Safetica. "A confirmar": a página não descreve esse recurso para a versão On-Prem. A ausência de classificação por IA na On-Prem é informada pelo fabricante. Detalhes de licenciamento são confirmados na proposta.',
       },
     ],
     siteOficial: 'https://www.safetica.com/',

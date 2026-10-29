@@ -11,7 +11,7 @@ const C = {
   corporativo: 'seguranca-de-ambientes-corporativos',
 } as const;
 
-const PLANOS_ESET = 'Os planos ESET PROTECT são cumulativos e sua composição é revisada pela ESET; os módulos incluídos no plano ofertado são detalhados na proposta.';
+const PLANOS_ESET = 'A composição de cada plano ESET PROTECT é revisada pela ESET e varia conforme o mercado; os módulos incluídos no plano ofertado no Brasil são detalhados na proposta.';
 
 /**
  * Catálogo de soluções. Para incluir um produto, acrescente um objeto aqui:
@@ -80,7 +80,7 @@ export const solucoes: Solucao[] = [
     recursos: [
       { titulo: 'Defesa contra ameaças avançadas', texto: 'Análise de amostras desconhecidas em ambiente isolado na nuvem.' },
       { titulo: 'Criptografia de disco completo', texto: 'Protege os dados em repouso de computadores, com gestão centralizada das chaves.' },
-      { titulo: 'Tudo do plano Entry', texto: 'Console de gerenciamento e proteção moderna de endpoints.' },
+      { titulo: 'Base da linha ESET PROTECT', texto: 'Console de gerenciamento e proteção moderna de endpoints, presentes desde o plano Entry.' },
     ],
     requisitos: [],
     aConfirmar: [PLANOS_ESET],
@@ -99,7 +99,7 @@ export const solucoes: Solucao[] = [
     descricao: 'Leva a proteção além dos endpoints: aplicações em nuvem, servidor de e-mail e gestão de vulnerabilidades e patches.',
     beneficio: 'Cobre o e-mail e as aplicações em nuvem, principais portas de entrada de ataques.',
     oQueE: [
-      'O ESET PROTECT Complete reúne, em uma só assinatura, a proteção de endpoints dos planos anteriores e camadas para o e-mail e as aplicações em nuvem — como Microsoft 365 e Google Workspace — além da identificação de vulnerabilidades e da aplicação de patches.',
+      'O ESET PROTECT Complete reúne, em uma só assinatura, a proteção de endpoints e camadas para o e-mail e as aplicações em nuvem — como Microsoft 365 e Google Workspace — além da identificação de vulnerabilidades e da aplicação de patches.',
     ],
     problema: 'Phishing e anexos maliciosos chegam pelo e-mail e pelas ferramentas de colaboração. Softwares desatualizados deixam brechas conhecidas abertas no ambiente.',
     cenarios: [
@@ -116,7 +116,7 @@ export const solucoes: Solucao[] = [
       { titulo: 'Proteção de aplicações em nuvem', texto: 'Camada adicional contra malware, spam e phishing no e-mail e no armazenamento em nuvem.' },
       { titulo: 'Segurança para servidor de e-mail', texto: 'Filtragem de mensagens no servidor de e-mail da empresa.' },
       { titulo: 'Gestão de vulnerabilidades e patches', texto: 'Inventário de falhas conhecidas e aplicação de correções.' },
-      { titulo: 'Tudo do plano Advanced', texto: 'Defesa contra ameaças avançadas e criptografia de disco completo.' },
+      { titulo: 'Defesa avançada e criptografia', texto: 'Defesa contra ameaças zero-day e criptografia de disco completo, módulos que a ESET associa ao plano Advanced.' },
     ],
     requisitos: [],
     aConfirmar: [PLANOS_ESET, 'Plataforma de e-mail e colaboração utilizada pela empresa.'],
@@ -129,33 +129,33 @@ export const solucoes: Solucao[] = [
     nome: 'ESET PROTECT Elite',
     fabricante: 'eset',
     familia: 'ESET PROTECT',
-    categorias: [C.endpoint, C.deteccao, C.acesso],
+    categorias: [C.endpoint, C.deteccao],
     categoriaPrincipal: C.deteccao,
-    descricao: 'Plano mais completo da linha, com detecção e resposta estendida (XDR) e autenticação multifator.',
+    descricao: 'Plano mais completo da linha, com detecção e resposta estendida (XDR) somada às camadas de prevenção.',
     beneficio: 'Une prevenção, investigação e resposta a incidentes em uma única plataforma.',
     oQueE: [
-      'O ESET PROTECT Elite combina todas as camadas de prevenção da linha ESET PROTECT com recursos de detecção e resposta estendida (XDR), que permitem investigar comportamentos suspeitos e agir sobre eles, e com autenticação multifator para proteger os acessos.',
+      'O ESET PROTECT Elite reúne as camadas de prevenção da linha ESET PROTECT e recursos de detecção e resposta estendida (XDR), que permitem investigar comportamentos suspeitos e agir sobre eles.',
     ],
     problema: 'Ataques mais elaborados podem permanecer ativos no ambiente sem acionar alertas de prevenção. Sem telemetria e ferramentas de investigação, a equipe não consegue entender o que aconteceu nem conter o incidente com rapidez.',
     cenarios: [
       'Empresas com equipe de TI ou segurança capaz de investigar alertas.',
       'Ambientes regulados que exigem rastreabilidade de incidentes.',
-      'Organizações que querem adotar autenticação multifator nos acessos.',
+      'Empresas que querem ir além da prevenção e passar a investigar incidentes.',
     ],
     comoFunciona: [
-      { titulo: 'Prevenção', texto: 'Todas as camadas dos planos anteriores protegem dispositivos, e-mail e nuvem.' },
+      { titulo: 'Prevenção', texto: 'As camadas de prevenção da linha protegem dispositivos, e-mail e aplicações em nuvem.' },
       { titulo: 'Telemetria', texto: 'Eventos dos endpoints são coletados e correlacionados pela camada XDR.' },
       { titulo: 'Investigação e resposta', texto: 'A equipe analisa a cadeia do ataque e executa ações de contenção.' },
     ],
     recursos: [
       { titulo: 'Detecção e resposta estendida (XDR)', texto: 'Visibilidade sobre comportamentos suspeitos e ferramentas de resposta a incidentes.' },
-      { titulo: 'Autenticação multifator', texto: 'Segundo fator de autenticação para reduzir o risco de credenciais roubadas.' },
-      { titulo: 'Tudo do plano Complete', texto: 'Proteção de endpoints, e-mail, aplicações em nuvem e gestão de patches.' },
+      { titulo: 'Autenticação multifator', texto: 'Módulo disponível na linha ESET PROTECT. A inclusão no plano Elite é confirmada na proposta.' },
+      { titulo: 'Camadas de prevenção', texto: 'Proteção de endpoints, e-mail e aplicações em nuvem, conforme a composição vigente do plano.' },
     ],
     requisitos: [],
-    aConfirmar: [PLANOS_ESET, 'Capacidade da equipe para operar a investigação ou necessidade de serviço gerenciado.'],
+    aConfirmar: [PLANOS_ESET, 'Inclusão de autenticação multifator e dos demais módulos no plano ofertado.', 'Capacidade da equipe para operar a investigação ou necessidade de serviço gerenciado.'],
     conversao: 'avaliacao',
-    palavrasChave: ['XDR', 'EDR', 'MFA', 'investigação', 'resposta a incidentes'],
+    palavrasChave: ['XDR', 'EDR', 'investigação', 'resposta a incidentes'],
     fontes: [{ rotulo: 'ESET — soluções para empresas', url: 'https://www.eset.com/br/' }],
   },
 
