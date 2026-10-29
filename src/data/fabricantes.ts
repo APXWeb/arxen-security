@@ -37,7 +37,7 @@ export const fabricantes: Fabricante[] = [
           { rotulo: 'Criptografia de disco completo', valores: [false, true, true, true] },
           { rotulo: 'Proteção de aplicações em nuvem', valores: [false, false, true, true] },
           { rotulo: 'Segurança para servidor de e-mail', valores: [false, false, true, true] },
-          { rotulo: 'Gestão de vulnerabilidades e patches', valores: [false, false, true, true] },
+          { rotulo: 'Gestão de vulnerabilidades e patches', valores: [false, 'A confirmar', true, true] },
           { rotulo: 'Detecção e resposta estendida (XDR)', valores: [false, false, false, true] },
           { rotulo: 'Autenticação multifator', valores: [false, false, false, 'A confirmar'] },
         ],
@@ -49,6 +49,7 @@ export const fabricantes: Fabricante[] = [
     fontes: [
       { rotulo: 'ESET — soluções para empresas', url: 'https://www.eset.com/br/' },
       { rotulo: 'ESET PROTECT — comparação de planos (PT)', url: 'https://www.eset.com/pt/business/entry-protection/' },
+      { rotulo: 'ESET PROTECT Complete — módulos (Brasil)', url: 'https://www.eset.com/br/antivirus-corporativo/bundles/complete-protection/' },
     ],
   },
   {
