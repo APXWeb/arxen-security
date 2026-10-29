@@ -37,7 +37,7 @@ Para incluir um produto, acrescente um objeto em `src/data/solucoes.ts`. A pági
 
 ## Logo da ARXEN
 
-`assets/brand/arxen-logo-original.jpeg` é o arquivo recebido. O site é escuro, e a versão bicolor perde o azul-marinho sobre o preto; por isso a interface usa `public/img/brand/arxen-logo-branca.*`, uma versão monocromática branca com a mesma forma e proporção (sem redesenho). A versão original, sem fundo, fica em `public/img/brand/arxen-logo.*` e é usada na imagem de compartilhamento. **Validar a versão branca com o cliente.**
+`assets/brand/arxen-logo-original.jpeg` é o arquivo recebido. O site é escuro, e a versão bicolor perde o azul-marinho sobre o preto; por isso a interface usa `public/img/brand/arxen-logo-branca.*`, uma versão para fundo escuro com a mesma forma e proporção (sem redesenho): o preto virou branco e as partes azuis (peça do canto, traço diagonal do escudo e o "A") mantêm o azul, em tom um pouco mais claro para aparecer sobre o preto. A versão original, sem fundo, fica em `public/img/brand/arxen-logo.*` e é usada na imagem de compartilhamento. **Validar a versão branca com o cliente.**
 
 ## Fontes
 
