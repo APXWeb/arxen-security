@@ -1,0 +1,5 @@
+# Proposta: indexação desativada (SITE.indexavel = false)
+User-agent: *
+Disallow: /
+
+Sitemap: https://apxweb.github.io/arxen-security/sitemap-index.xml
