@@ -30,15 +30,14 @@ const etapas = [
       <Trilha itens={[{ rotulo: 'Sobre' }]} />
       <div class="sobre-hero__grade">
         <div>
-          <p class="rotulo">Sobre a ARXEN</p>
-          <h1>Segurança de dados com critério.</h1>
+          <h1>Sobre a ARXEN Security</h1>
         </div>
         <div class="sobre-hero__texto">
           <p class="lead">
             A ARXEN Security reúne soluções de cibersegurança de fabricantes especializados e ajuda empresas a escolher, entre elas, as que fazem sentido para o próprio ambiente.
           </p>
           <p class="texto-2">
-            A premissa é simples: segurança eficaz depende de entender o que precisa ser protegido. Por isso o portfólio é organizado por necessidade — dados, dispositivos, e-mail, acessos, backup, vulnerabilidades e detecção — e cada recomendação parte do cenário de quem está do outro lado.
+            Para recomendar bem, é preciso entender o que precisa ser protegido. Por isso o portfólio é organizado por necessidade (dados, dispositivos, e-mail, acessos, backup, vulnerabilidades e detecção) e cada indicação parte do ambiente do cliente.
           </p>
         </div>
       </div>
@@ -61,16 +60,14 @@ const etapas = [
     <div class="wrap">
       <div class="cabeca cabeca--split">
         <div>
-          <p class="rotulo">Abordagem</p>
-          <h2 id="t-abord">Do diagnóstico à proposta, sem atalhos.</h2>
+          <h2 id="t-abord">Como funciona o atendimento</h2>
         </div>
-        <p class="lead">Cada etapa existe para reduzir o risco de contratar algo que não resolve o problema — ou que duplica o que a empresa já tem.</p>
+        <p class="lead">As etapas evitam contratar algo que não resolve o problema ou que repete uma função que a empresa já tem.</p>
       </div>
       <ol class="abord">
         {
           etapas.map((e, i) => (
             <li class="revelar" style={`--atraso:${i * 90}ms`}>
-              <span class="abord__n">{String(i + 1).padStart(2, '0')}</span>
               <h3>{e.titulo}</h3>
               <p class="texto-2">{e.texto}</p>
             </li>
@@ -83,8 +80,7 @@ const etapas = [
   <section class="secao--compacta" aria-labelledby="t-comp">
     <div class="wrap comp">
       <div>
-        <p class="rotulo">Compromissos</p>
-        <h2 id="t-comp">O que você pode esperar.</h2>
+        <h2 id="t-comp">O que você pode esperar</h2>
       </div>
       <ul class="comp__lista">
         <li>
@@ -97,7 +93,7 @@ const etapas = [
         </li>
         <li>
           <h3>Recomendação proporcional</h3>
-          <p class="texto-2">O porte, o setor e a maturidade da empresa determinam o que priorizar — não o tamanho do pacote.</p>
+          <p class="texto-2">O porte, o setor e a maturidade da empresa definem o que vem primeiro.</p>
         </li>
         <li>
           <h3>Privacidade dos dados</h3>
@@ -152,7 +148,6 @@ const etapas = [
     margin-top: clamp(28px, 5vw, 64px);
   }
   .sobre-hero h1 {
-    margin-top: 18px;
     max-width: 12ch;
   }
   .sobre-hero__texto {
@@ -210,7 +205,6 @@ const etapas = [
     background: var(--ink-0);
   }
   .abord__n {
-    font-family: var(--f-mono);
     font-size: 0.78rem;
     color: var(--blue);
     margin-bottom: 18px;
@@ -221,9 +215,6 @@ const etapas = [
   .comp {
     display: grid;
     gap: 36px;
-  }
-  .comp h2 {
-    margin-top: 16px;
   }
   .comp__lista {
     list-style: none;
@@ -277,7 +268,7 @@ const etapas = [
     font-weight: 500;
   }
   .areas a :global(.icone) {
-    color: var(--navy);
+    color: var(--blue);
     flex: none;
   }
   .areas a:hover {

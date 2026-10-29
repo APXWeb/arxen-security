@@ -14,7 +14,7 @@ const temContato = CONTATO.email || CONTATO.telefone || wa || CONTATO.linkedin;
     <div class="rodape__topo">
       <div class="rodape__marca">
         <a href={rotas.inicio()} aria-label="ARXEN Security — página inicial">
-          <img src={url('img/brand/arxen-logo.png')} alt="ARXEN Security" width="640" height="212" loading="lazy" />
+          <img src={url('img/brand/arxen-logo-branca.png')} alt="ARXEN Security" width="640" height="212" loading="lazy" />
         </a>
         <p class="texto-2">Soluções de cibersegurança organizadas por necessidade, com orientação para escolher o que faz sentido para cada empresa.</p>
         <a class="btn btn--escuro btn--pequeno" href={rotas.contato()}>Falar com especialista</a>
@@ -97,13 +97,9 @@ const temContato = CONTATO.email || CONTATO.telefone || wa || CONTATO.linkedin;
   .rodape__marca img {
     height: 48px;
     width: auto;
-    mix-blend-mode: multiply;
   }
   .rodape__titulo {
-    font-family: var(--f-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.84rem;
     color: var(--tx-l-2);
     margin-bottom: 14px;
   }

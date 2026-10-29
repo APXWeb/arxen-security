@@ -31,7 +31,7 @@ const temas = [
       <Trilha itens={[{ rotulo: 'Para revendas' }]} escura />
       <div class="rev-hero__grade">
         <div class="rev-hero__texto">
-          <p class="rotulo">Revendas · MSPs · Integradores</p>
+          <p class="rotulo">Revendas, MSPs e integradores</p>
           <h1>Um portfólio de segurança organizado para a sua oferta.</h1>
           <p class="lead">
             Se a sua empresa atende clientes com serviços ou licenças de TI, a ARXEN pode conversar sobre as soluções do catálogo, as formas de licenciamento e as oportunidades em andamento.
@@ -45,7 +45,6 @@ const temas = [
           {
             temas.map((t, i) => (
               <li class="revelar" style={`--atraso:${i * 90}ms`}>
-                <span>{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <strong>{t.titulo}</strong>
                   <p>{t.texto}</p>
@@ -61,8 +60,7 @@ const temas = [
   <section class="secao--compacta" aria-labelledby="t-perfis">
     <div class="wrap">
       <div class="cabeca">
-        <p class="rotulo">Para quem é</p>
-        <h2 id="t-perfis">Empresas que levam segurança aos próprios clientes.</h2>
+        <h2 id="t-perfis">Para quem é</h2>
       </div>
       <ul class="perfis">
         {
@@ -80,9 +78,8 @@ const temas = [
   <section class="secao--compacta s-papel" aria-labelledby="t-port">
     <div class="wrap port">
       <div>
-        <p class="rotulo">Portfólio</p>
-        <h2 id="t-port">{categorias.length} necessidades, {fabricantes.length} fabricantes.</h2>
-        <p class="lead">A organização por necessidade facilita montar ofertas em camadas para o cliente final — da proteção de endpoints ao SOC.</p>
+        <h2 id="t-port">O portfólio</h2>
+        <p class="lead">A organização por necessidade facilita montar ofertas em camadas para o cliente final, da proteção de endpoints ao SOC.</p>
         <ul class="port__cats">
           {categorias.map((c) => <li><a href={rotas.categoria(c.slug)}><Icon nome={c.icone} tamanho={18} />{c.curto}</a></li>)}
         </ul>
@@ -105,8 +102,7 @@ const temas = [
   <section class="secao--compacta" id="conversar" aria-labelledby="t-conv">
     <div class="wrap conv">
       <div class="conv__texto">
-        <p class="rotulo">Conversa comercial</p>
-        <h2 id="t-conv">Conte como a sua empresa atua.</h2>
+        <h2 id="t-conv">Conte como a sua empresa atua</h2>
         <p class="lead">Com o perfil da sua operação e dos seus clientes, a conversa começa pelo que é relevante para o seu negócio.</p>
         <p class="conv__aviso">
           <Icon nome="info" tamanho={18} />
@@ -123,7 +119,6 @@ const temas = [
 <style>
   .rev-hero {
     padding-block: 28px clamp(56px, 8vw, 104px);
-    background-image: radial-gradient(ellipse 60% 70% at 100% 100%, rgba(10, 58, 133, 0.45), transparent 70%);
   }
   .rev-hero__grade {
     display: grid;
@@ -147,13 +142,10 @@ const temas = [
   }
   .rev-hero__temas li {
     display: grid;
-    grid-template-columns: 40px 1fr;
-    gap: 14px;
     padding: 22px 0;
     border-top: 1px solid var(--line-d-2);
   }
   .rev-hero__temas span {
-    font-family: var(--f-mono);
     font-size: 0.78rem;
     color: var(--blue);
     padding-top: 3px;
@@ -218,7 +210,7 @@ const temas = [
     text-decoration: none;
   }
   .port__cats a :global(.icone) {
-    color: var(--navy);
+    color: var(--blue);
   }
   .port__cats a:hover {
     border-color: var(--tx-l-1);

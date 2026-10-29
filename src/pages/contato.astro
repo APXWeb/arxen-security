@@ -20,19 +20,16 @@ const canais = [
       <div class="contato__lado">
         <Trilha itens={[{ rotulo: 'Contato' }]} />
         <h1>Fale com um especialista</h1>
-        <p class="lead">Conte o cenário e o que você precisa resolver. Com isso, a conversa já começa pela recomendação — e não por um questionário.</p>
+        <p class="lead">Conte como é o seu ambiente e o que precisa resolver. Com essas informações, a primeira conversa já trata das soluções adequadas.</p>
 
         <ol class="contato__passos">
           <li>
-            <span>01</span>
             <div><strong>Você descreve o cenário</strong><p class="texto-2">Ambiente, ferramentas atuais e o que motivou a busca.</p></div>
           </li>
           <li>
-            <span>02</span>
             <div><strong>Análise da equipe</strong><p class="texto-2">Avaliamos quais soluções do portfólio se aplicam ao caso.</p></div>
           </li>
           <li>
-            <span>03</span>
             <div><strong>Próximo passo</strong><p class="texto-2">Avaliação do ambiente, demonstração ou proposta, conforme a solução.</p></div>
           </li>
         </ol>
@@ -93,13 +90,10 @@ const canais = [
   }
   .contato__passos li {
     display: grid;
-    grid-template-columns: 40px 1fr;
-    gap: 14px;
     padding: 16px 0;
     border-top: 1px solid var(--line-l);
   }
   .contato__passos span {
-    font-family: var(--f-mono);
     font-size: 0.78rem;
     color: var(--blue-ink);
     padding-top: 3px;
@@ -109,10 +103,7 @@ const canais = [
     margin-top: 2px;
   }
   .contato__sub {
-    font-family: var(--f-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.84rem;
     color: var(--tx-l-2);
     margin-bottom: 10px;
   }
@@ -143,7 +134,7 @@ const canais = [
     font-size: 0.92rem;
   }
   .contato__revenda :global(.icone) {
-    color: var(--navy);
+    color: var(--blue);
   }
   .contato__revenda a {
     color: var(--blue-ink);
@@ -154,7 +145,7 @@ const canais = [
     border: 1px solid var(--line-l);
     border-radius: var(--r-3);
     background: var(--white);
-    box-shadow: 0 30px 60px -40px rgba(5, 10, 20, 0.25);
+    box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.5);
   }
   @media (min-width: 1000px) {
     .contato__grade {

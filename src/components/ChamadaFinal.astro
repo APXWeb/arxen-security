@@ -11,8 +11,8 @@ interface Props {
 }
 
 const {
-  titulo = 'Vamos entender o que a sua empresa precisa proteger.',
-  texto = 'Conte o cenário atual e os objetivos. A equipe da ARXEN retorna com uma recomendação de soluções e o próximo passo — avaliação, demonstração ou proposta.',
+  titulo = 'Fale com a equipe da ARXEN.',
+  texto = 'Conte como é o seu ambiente hoje e o que precisa resolver. A equipe responde com as soluções indicadas e o próximo passo: avaliação, demonstração ou proposta.',
   rotuloBotao = 'Falar com especialista',
   hrefBotao = rotas.contato(),
   secundario = { rotulo: 'Explorar o catálogo', href: rotas.solucoes() },
@@ -20,21 +20,8 @@ const {
 ---
 
 <section class="chamada s-escura" aria-labelledby="chamada-titulo">
-  <svg class="chamada__malha" viewBox="0 0 600 400" aria-hidden="true" preserveAspectRatio="xMaxYMid slice">
-    <g fill="none" stroke="currentColor" stroke-width="1">
-      <path d="M600 40 H420 L360 100 H240" />
-      <path d="M600 120 H460 L400 180 H300 L260 220" />
-      <path d="M600 200 H500 L440 260 H340" />
-      <path d="M600 280 H470 L430 320 H280" />
-      <path d="M600 360 H520 L500 380" />
-    </g>
-    <g fill="currentColor">
-      <circle cx="240" cy="100" r="3" /><circle cx="260" cy="220" r="3" /><circle cx="340" cy="260" r="3" /><circle cx="280" cy="320" r="3" />
-    </g>
-  </svg>
   <div class="wrap chamada__grade">
     <div class="revelar">
-      <p class="rotulo">Próximo passo</p>
       <h2 id="chamada-titulo">{titulo}</h2>
     </div>
     <div class="chamada__lado revelar" style="--atraso:120ms">
@@ -54,22 +41,12 @@ const {
     padding-block: clamp(80px, 10vw, 128px);
     border-top: 1px solid var(--line-d);
   }
-  .chamada__malha {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    color: var(--navy-2);
-    opacity: 0.55;
-    pointer-events: none;
-  }
   .chamada__grade {
     position: relative;
     display: grid;
     gap: 32px;
   }
   .chamada h2 {
-    margin-top: 18px;
     max-width: 18ch;
   }
   .chamada__lado {

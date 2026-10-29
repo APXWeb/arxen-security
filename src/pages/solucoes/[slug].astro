@@ -130,7 +130,7 @@ const ld = {
           {
             s.comoFunciona.map((etapa, i) => (
               <li class="fluxo__etapa revelar" style={`--atraso:${i * 90}ms`}>
-                <span class="fluxo__marca" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="fluxo__marca" aria-hidden="true">Etapa {i + 1}</span>
                 <h3>{etapa.titulo}</h3>
                 <p class="texto-2">{etapa.texto}</p>
               </li>
@@ -177,7 +177,7 @@ const ld = {
       <section id="como-solicitar" class="bloco solicitar" aria-labelledby="t-sol">
         <h2 id="t-sol">Como solicitar</h2>
         <ol class="solicitar__passos">
-          <li><span><strong>Envie o contexto.</strong> Informe o ambiente e o objetivo no formulário — a solução já vem selecionada.</span></li>
+          <li><span><strong>Envie o contexto.</strong> Informe o ambiente e o objetivo no formulário. A solução já vem selecionada.</span></li>
           <li><span><strong>Conversa de entendimento.</strong> A equipe confirma requisitos e verifica se esta é a opção mais adequada.</span></li>
           <li><span><strong>{tipoPedido}.</strong> Você recebe o próximo passo indicado para {s.nome}.</span></li>
         </ol>
@@ -259,7 +259,8 @@ const ld = {
     place-items: center;
     height: 104px;
     border-radius: var(--r-2);
-    background: var(--white);
+    background: var(--page);
+    border: 1px solid var(--line-l);
   }
   .ficha dl {
     margin: 0;
@@ -273,10 +274,7 @@ const ld = {
     border-bottom: 0;
   }
   .ficha dt {
-    font-family: var(--f-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.84rem;
     color: var(--tx-d-3);
     margin-bottom: 4px;
   }
@@ -320,10 +318,7 @@ const ld = {
     }
   }
   .sumario__titulo {
-    font-family: var(--f-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.84rem;
     color: var(--tx-l-2);
     margin-bottom: 12px;
   }
@@ -430,8 +425,7 @@ const ld = {
     }
   }
   .fluxo__marca {
-    font-family: var(--f-mono);
-    font-size: 0.75rem;
+    font-size: 0.84rem;
     color: var(--blue);
     margin-bottom: 8px;
   }
@@ -524,7 +518,6 @@ const ld = {
     height: 30px;
     border-radius: 50%;
     border: 1px solid var(--line-l-2);
-    font-family: var(--f-mono);
     font-size: 0.8rem;
     color: var(--tx-l-1);
   }

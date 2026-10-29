@@ -11,7 +11,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'eset',
     nome: 'ESET',
-    logo: { src: 'img/fabricantes/eset.svg', largura: 527, altura: 88, escala: 1.3, origem: 'SVG do site oficial eset.com (texto em cinza-grafite)' },
+    logo: { src: 'img/fabricantes/eset.svg', largura: 527, altura: 88, escala: 1.3, origem: 'SVG do site oficial eset.com; o texto usa currentColor e foi definido em branco' },
     foco: 'Proteção de endpoints, servidores e e-mail com detecção e resposta.',
     apresentacao: [
       'A ESET é uma fabricante europeia de software de cibersegurança, conhecida pela proteção de endpoints com baixo consumo de recursos e pela pesquisa própria de ameaças.',
@@ -93,7 +93,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'cove-data-protection',
     nome: 'Cove Data Protection',
-    logo: { src: 'img/fabricantes/cove.png', largura: 640, altura: 154, escala: 1.3, origem: 'Versão positiva derivada da logo em negativo do portfólio de referência — substituir pelo arquivo oficial do kit de marca N-able' },
+    logo: { src: 'img/fabricantes/cove.png', largura: 821, altura: 197, escala: 1.3, origem: 'Versão para fundo escuro (branco + turquesa), como publicada no portfólio de referência' },
     foco: 'Backup em nuvem e recuperação de desastres, da N-able.',
     apresentacao: [
       'Cove Data Protection é a solução de backup e recuperação de desastres da N-able, entregue como serviço em nuvem. A infraestrutura de armazenamento, as atualizações e a segurança da plataforma ficam a cargo do fabricante.',
@@ -127,7 +127,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'sendmarc',
     nome: 'Sendmarc',
-    logo: { src: 'img/fabricantes/sendmarc.svg', largura: 368, altura: 48, escala: 0.95, origem: 'SVG do site oficial sendmarc.com' },
+    logo: { src: 'img/fabricantes/sendmarc.svg', largura: 368, altura: 48, escala: 0.95, origem: 'SVG do site oficial sendmarc.com, em branco monocromático para fundo escuro' },
     foco: 'Autenticação de e-mail com DMARC e defesa contra falsificação de domínio.',
     apresentacao: [
       'A Sendmarc é especializada em autenticação de e-mail. Sua plataforma ajuda empresas a configurar, monitorar e aplicar DMARC, SPF e DKIM em todos os seus domínios, para que apenas remetentes autorizados consigam enviar mensagens em nome da marca.',
@@ -158,7 +158,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'microsoft',
     nome: 'Microsoft',
-    logo: { src: 'img/fabricantes/microsoft.svg', largura: 338, altura: 72, origem: 'SVG oficial (Wikimedia Commons, Microsoft logo 2012)' },
+    logo: { src: 'img/fabricantes/microsoft.svg', largura: 338, altura: 72, origem: 'SVG oficial (Wikimedia Commons), com o texto em branco para fundo escuro' },
     foco: 'Produtividade, colaboração e IA para o trabalho com Microsoft 365.',
     apresentacao: [
       'A Microsoft fornece a plataforma de produtividade usada por boa parte das empresas: e-mail corporativo, aplicativos de escritório, armazenamento e colaboração em nuvem, reunidos no Microsoft 365.',
@@ -195,7 +195,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'datadike',
     nome: 'DataDike',
-    logo: { src: 'img/fabricantes/datadike.png', largura: 640, altura: 91, origem: 'Versão escura derivada da logo branca do portfólio de referência — substituir pelo arquivo oficial do fabricante' },
+    logo: { src: 'img/fabricantes/datadike.png', largura: 900, altura: 128, origem: 'Versão branca, como publicada no portfólio de referência' },
     foco: 'Gestão de endpoints (SONAR) e acesso privilegiado (F-Safer).',
     apresentacao: [
       'A DataDike desenvolve soluções de cibersegurança em duas frentes complementares: a gestão unificada de endpoints e o controle de acessos privilegiados.',
@@ -231,7 +231,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'mobiltec',
     nome: 'Mobiltec',
-    logo: { src: 'img/fabricantes/mobiltec.png', largura: 903, altura: 210, escala: 1.1, origem: 'Logo oficial do site mobiltec.com.br' },
+    logo: { src: 'img/fabricantes/mobiltec.png', largura: 900, altura: 210, escala: 1.1, origem: 'Versão branca oficial do site mobiltec.com.br (logo-mobiltec-white)' },
     foco: 'Gerenciamento de dispositivos móveis corporativos com o cloud4mobile.',
     apresentacao: [
       'A Mobiltec é uma empresa brasileira de gerenciamento de dispositivos móveis (MDM). Sua plataforma, o cloud4mobile, permite configurar, monitorar e proteger smartphones, tablets e coletores usados por equipes internas e de campo.',
@@ -266,7 +266,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'secpod',
     nome: 'SecPod',
-    logo: { src: 'img/fabricantes/secpod.svg', largura: 140, altura: 26, origem: 'SVG do site oficial secpod.com' },
+    logo: { src: 'img/fabricantes/secpod.svg', largura: 140, altura: 26, origem: 'SVG do site oficial secpod.com, em branco como a versão secpod_white_logo do próprio site' },
     foco: 'Gestão contínua de vulnerabilidades, exposição e patches com a plataforma SANER.',
     apresentacao: [
       'A SecPod desenvolve a plataforma SANER (anteriormente conhecida como SanerNow), voltada à gestão contínua de vulnerabilidades e exposição. A abordagem é preventiva: encontrar e corrigir as brechas antes que sejam exploradas.',
@@ -301,7 +301,7 @@ export const fabricantes: Fabricante[] = [
   {
     slug: 'stellar-cyber',
     nome: 'Stellar Cyber',
-    logo: { src: 'img/fabricantes/stellar-cyber.svg', largura: 538, altura: 183, escala: 1.3, origem: 'SVG oficial (versão para fundo claro) de stellarcyber.ai' },
+    logo: { src: 'img/fabricantes/stellar-cyber.svg', largura: 538, altura: 183, escala: 1.3, origem: 'SVG oficial para fundo escuro de stellarcyber.ai' },
     foco: 'Operações de segurança unificadas com Open XDR, NG-SIEM e NDR.',
     apresentacao: [
       'A Stellar Cyber desenvolve uma plataforma de operações de segurança baseada no conceito de Open XDR: em vez de exigir a troca das ferramentas existentes, ela coleta e correlaciona dados de endpoints, rede, nuvem, e-mail e identidades em uma única console.',

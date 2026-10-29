@@ -32,12 +32,12 @@ Para incluir um produto, acrescente um objeto em `src/data/solucoes.ts`. A pági
 - **Indexação:** `SITE.indexavel = false` (proposta) gera `noindex` e `Disallow: /`. Mude para `true` no domínio definitivo.
 - **Parcerias:** o site afirma explicitamente que a apresentação dos fabricantes **não** indica parceria oficial. Se houver parceria confirmada por escrito, inclua o slug em `INSTITUCIONAL.parceriasConfirmadas`.
 - **Política de privacidade:** é uma minuta marcada como tal; precisa de revisão jurídica e dos dados do controlador/DPO.
-- **Logos de fabricantes:** Cove Data Protection e DataDike só foram encontrados em versão branca; o site usa uma versão positiva (texto escuro) derivada. Substituir pelos arquivos oficiais dos kits de marca.
+- **Logos de fabricantes:** o site é escuro, então usa as versões claras. ESET, Cove, DataDike, Mobiltec, SecPod e Stellar Cyber publicam versões para fundo escuro; Sendmarc e Microsoft tiveram o texto definido em branco. Vale confirmar com os kits de marca oficiais.
 - **Dados a confirmar:** composição atual dos planos ESET PROTECT no Brasil (a ESET mudou a nomenclatura em alguns mercados); sistemas suportados pelo cloud4mobile além de Android; site oficial da DataDike estava fora do ar durante a pesquisa (descrições baseadas no portfólio de referência).
 
 ## Logo da ARXEN
 
-`assets/brand/arxen-logo-original.jpeg` é o arquivo recebido. `public/img/brand/arxen-logo.{png,webp}` é a mesma arte com o fundo branco removido — sem redesenho, recoloração ou mudança de proporção. Por isso a logo aparece sempre sobre superfícies claras (cabeçalho e rodapé). Uma versão para fundo escuro depende de arquivo oficial do cliente.
+`assets/brand/arxen-logo-original.jpeg` é o arquivo recebido. O site é escuro, e a versão bicolor perde o azul-marinho sobre o preto; por isso a interface usa `public/img/brand/arxen-logo-branca.*`, uma versão monocromática branca com a mesma forma e proporção (sem redesenho). A versão original, sem fundo, fica em `public/img/brand/arxen-logo.*` e é usada na imagem de compartilhamento. **Validar a versão branca com o cliente.**
 
 ## Fontes
 

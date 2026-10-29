@@ -15,8 +15,8 @@ const ativo = (s: string) => (secaoAtiva === s ? 'page' : undefined);
   <div class="wrap topo__barra">
     <a class="topo__marca" href={rotas.inicio()} aria-label="ARXEN Security — página inicial">
       <picture>
-        <source srcset={url('img/brand/arxen-logo.webp')} type="image/webp" />
-        <img src={url('img/brand/arxen-logo.png')} alt="ARXEN Security" width="640" height="212" />
+        <source srcset={url('img/brand/arxen-logo-branca.webp')} type="image/webp" />
+        <img src={url('img/brand/arxen-logo-branca.png')} alt="ARXEN Security" width="640" height="212" />
       </picture>
     </a>
 
@@ -110,13 +110,13 @@ const ativo = (s: string) => (secaoAtiva === s ? 'page' : undefined);
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(255, 255, 255, 0.97);
+    background: rgba(8, 10, 15, 0.97);
     border-bottom: 1px solid transparent;
     transition: border-color var(--t-2), box-shadow var(--t-2);
   }
   @supports (backdrop-filter: blur(8px)) {
     .topo {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(8, 10, 15, 0.82);
       backdrop-filter: saturate(1.4) blur(12px);
     }
   }
@@ -197,7 +197,7 @@ const ativo = (s: string) => (secaoAtiva === s ? 'page' : undefined);
     background: var(--white);
     border: 1px solid var(--line-l);
     border-radius: var(--r-3);
-    box-shadow: 0 24px 60px -24px rgba(5, 10, 20, 0.28);
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.6);
     padding: 22px;
     animation: painel-entra 200ms var(--ease);
   }
@@ -227,10 +227,7 @@ const ativo = (s: string) => (secaoAtiva === s ? 'page' : undefined);
   }
   .painel__titulo {
     display: block;
-    font-family: var(--f-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.84rem;
     color: var(--tx-l-2);
     margin: 4px 0 12px 10px;
   }

@@ -179,9 +179,9 @@ const pendente = !FORMULARIO.endpoint;
     gap: 12px;
     padding: 14px 16px;
     border-radius: var(--r-2);
-    background: #fff8e6;
-    border: 1px solid #f0dca8;
-    color: #5c4300;
+    background: rgba(240, 180, 40, 0.08);
+    border: 1px solid rgba(240, 180, 40, 0.3);
+    color: #f3d58a;
     font-size: 0.88rem;
     line-height: 1.5;
   }
@@ -191,9 +191,9 @@ const pendente = !FORMULARIO.endpoint;
   .form__resumo-erros {
     padding: 14px 16px;
     border-radius: var(--r-2);
-    background: #fdecea;
-    border: 1px solid #f3c4bf;
-    color: #7a1d15;
+    background: rgba(255, 110, 95, 0.08);
+    border: 1px solid rgba(255, 110, 95, 0.35);
+    color: #ffb3aa;
     font-size: 0.92rem;
   }
   .form__resumo-erros :global(ul) {
@@ -260,7 +260,7 @@ const pendente = !FORMULARIO.endpoint;
   .opcao input:checked + .opcao__caixa {
     border-color: var(--blue-ink);
     box-shadow: inset 0 0 0 1px var(--blue-ink);
-    background: #f5f8ff;
+    background: rgba(77, 132, 255, 0.08);
   }
   .opcao input:checked + .opcao__caixa :global(.icone) {
     color: var(--blue-ink);
@@ -335,7 +335,7 @@ const pendente = !FORMULARIO.endpoint;
   .campo textarea:focus {
     outline: none;
     border-color: var(--blue-ink);
-    box-shadow: 0 0 0 3px rgba(27, 85, 214, 0.18);
+    box-shadow: 0 0 0 3px rgba(77, 132, 255, 0.28);
   }
   .campo [aria-invalid='true'] {
     border-color: var(--erro) !important;
@@ -417,19 +417,19 @@ const pendente = !FORMULARIO.endpoint;
     line-height: 1.55;
   }
   .form__status[data-tipo='ok'] {
-    background: #e9f6ef;
-    border: 1px solid #b9e1cb;
-    color: #0f5133;
+    background: rgba(60, 200, 130, 0.08);
+    border: 1px solid rgba(60, 200, 130, 0.35);
+    color: #9fe3bf;
   }
   .form__status[data-tipo='erro'] {
-    background: #fdecea;
-    border: 1px solid #f3c4bf;
-    color: #7a1d15;
+    background: rgba(255, 110, 95, 0.08);
+    border: 1px solid rgba(255, 110, 95, 0.35);
+    color: #ffb3aa;
   }
   .form__status[data-tipo='pendente'] {
-    background: #fff8e6;
-    border: 1px solid #f0dca8;
-    color: #5c4300;
+    background: rgba(240, 180, 40, 0.08);
+    border: 1px solid rgba(240, 180, 40, 0.3);
+    color: #f3d58a;
   }
   .form__status :global(strong) {
     display: block;

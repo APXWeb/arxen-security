@@ -38,7 +38,6 @@ const outros = fabricantes.filter((o) => o.slug !== f.slug);
       <Trilha itens={[{ rotulo: 'Fabricantes', href: rotas.fabricantes() }, { rotulo: f.nome }]} escura />
       <div class="fab-topo__grade">
         <div class="fab-topo__texto">
-          <p class="rotulo">Fabricante</p>
           <h1>{f.nome}</h1>
           <p class="lead">{f.foco}</p>
           <div class="acoes">
@@ -182,7 +181,7 @@ const outros = fabricantes.filter((o) => o.slug !== f.slug);
     padding: 32px;
     border-radius: var(--r-3);
     background: var(--white);
-    box-shadow: 0 0 0 8px var(--ink-1), 0 0 0 9px var(--line-d);
+    border: 1px solid var(--line-l);
   }
   @media (min-width: 960px) {
     .fab-topo__grade {
@@ -235,10 +234,7 @@ const outros = fabricantes.filter((o) => o.slug !== f.slug);
     border-top: 1px solid var(--line-l);
   }
   .apres__sub {
-    font-family: var(--f-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 0.84rem;
     color: var(--tx-l-2);
     margin-bottom: 12px;
   }
@@ -285,8 +281,7 @@ const outros = fabricantes.filter((o) => o.slug !== f.slug);
     border-color: var(--tx-l-1);
   }
   .sols__ancoras span {
-    font-family: var(--f-mono);
-    font-size: 0.75rem;
+    font-size: 0.84rem;
     color: var(--tx-l-2);
   }
   .sols__grupo + .sols__grupo {
@@ -298,7 +293,7 @@ const outros = fabricantes.filter((o) => o.slug !== f.slug);
     gap: 10px;
     font-size: 1.05rem;
     margin-bottom: 16px;
-    color: var(--navy);
+    color: var(--blue);
   }
   .sols__grade {
     display: grid;
